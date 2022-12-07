@@ -5,10 +5,10 @@ import Home from './screen/Home';
 const App = () => {
 	return (
 		<Router>
-            <Routes>
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </Router>
+			<Routes>
+				<Route path="/" element={<Home />} />
+			</Routes>
+		</Router>
 	);
 };
 
