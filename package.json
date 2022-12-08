@@ -21,8 +21,8 @@
 	},
 	"devDependencies": {
 		"@parcel/transformer-image": "2.0.0-rc.0",
-		"@typescript-eslint/eslint-plugin": "^5.0.0",
-		"@typescript-eslint/parser": "^5.45.1",
+		"@typescript-eslint/eslint-plugin": "^5.46.0",
+		"@typescript-eslint/parser": "^5.46.0",
 		"autoprefixer": "^10.4.13",
 		"cssnano": "^5.1.14",
 		"eslint": "^8.0.1",
