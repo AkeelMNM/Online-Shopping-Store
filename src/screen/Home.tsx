@@ -1,37 +1,13 @@
 import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { HomeCard } from '../components';
+import { HomeCard, ProductCard } from '../components';
 
 const carouselImage = [
 	'https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80',
 	'https://images.unsplash.com/photo-1655745653127-4d6837baf958?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
 	'https://images.unsplash.com/photo-1516527653392-602455dd9cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80',
 ];
-
-interface BestSellerCardProps {
-	name: string;
-	image: string;
-	price: number;
-	onPress: () => void;
-}
-
-const BestSellerCard = (props: BestSellerCardProps) => {
-	return (
-		<div onClick={props.onPress} className="group">
-			<div className="aspect-w-1 aspect-h-1 w-1/3 overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
-				<img
-					src={props.image}
-					className="h-full w-full object-cover object-center group-hover:opacity-75"
-				/>
-			</div>
-			<h3 className="mt-4 text-sm text-gray-700">{props.name}</h3>
-			<p className="mt-1 text-lg font-medium text-gray-900">
-				${props.price}
-			</p>
-		</div>
-	);
-};
 
 const Home = () => {
 	const onPressBestSeller = () => {};
@@ -77,7 +53,7 @@ const Home = () => {
 					Best Seller
 				</label>
 				<div className="flex flex-row p-10">
-					<BestSellerCard
+					<ProductCard
 						name="Support Local"
 						image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
 						onPress={onPressBestSeller}
