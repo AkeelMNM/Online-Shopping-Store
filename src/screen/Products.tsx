@@ -1,8 +1,11 @@
-import React from 'react';
-import { Checkbox, ProductCard } from '../components';
+import React, { useState } from 'react';
+import { Checkbox, ProductCard, ProductModal } from '../components';
 import Shirt from '../assets/images/Shirt.png';
+import { Product } from '../interfaces';
 
 const Products = () => {
+    const [modalVisibility, setModalVisibility] = useState<Boolean>(true);
+    const [product, setProduct] = useState<Product>();
     const onSelectGender = (value: string) => { };
 
     const onSelectCategory = (value: string) => {
@@ -14,6 +17,11 @@ const Products = () => {
     const onPressFilter = () => { };
 
     const onPressProduct = () => { };
+
+    const onPressModal = (item: Product) => {
+        setProduct(item);
+        setModalVisibility(true);
+    }
 
     return (
         <div className="h-full">
@@ -125,6 +133,7 @@ const Products = () => {
                     </div>
                 </div>
             </div>
+            <ProductModal visible={modalVisibility} />
         </div>
     );
 };
