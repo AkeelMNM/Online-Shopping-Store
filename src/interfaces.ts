@@ -1,8 +1,17 @@
 export interface Product {
-	name: string;
-	price: number;
-	image: string;
-	quantity: string;
-	colors: string[];
-	sizes: string[];
+	id: string,
+    category: string[],
+    title: string,
+    isBestSeller: boolean,
+    variants: Variant[]
+}
+
+interface Variant {
+    id: string,
+    size: string,
+    color: string,
+    price: string,
+    stock: number,
+    discount: string,
+    image: string
 }

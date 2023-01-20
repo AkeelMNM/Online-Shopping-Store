@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { HomeCard, ProductCard } from '../components';
+import { fetchProducts } from '../redux/product';
+import { useAppSelector, useAppDispatch } from '../redux/hook'
 
 const carouselImage = [
 	'https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80',
@@ -10,7 +12,13 @@ const carouselImage = [
 ];
 
 const Home = () => {
-	const onPressBestSeller = () => {};
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(fetchProducts());
+	}, [])
+
+	const onPressBestSeller = () => { };
 
 	return (
 		<div>
@@ -57,7 +65,7 @@ const Home = () => {
 						name="Support Local"
 						image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
 						onPress={onPressBestSeller}
-						price={35}
+						price={'$35'}
 					/>
 				</div>
 			</div>

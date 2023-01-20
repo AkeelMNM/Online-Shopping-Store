@@ -3,7 +3,7 @@ import React from 'react';
 interface ProductCardProps {
 	name: string;
 	image: string;
-	price: number;
+	price: string;
 	onPress: () => void;
 }
 
@@ -22,7 +22,7 @@ const ProductCard = (props: ProductCardProps) => {
 
 				<div className="flex items-center justify-between">
 					<span className="text-s font-bold text-gray-900 dark:text-black">
-						${props.price}
+						{props.price}
 					</span>
 				</div>
 			</div>
