@@ -18,18 +18,18 @@ const TRENDS: string[] = ['Best Seller', 'Hot This Month'];
 
 const Products = () => {
 	const products: Product[] = useAppSelector(state => state.product.products);
-	const [modalVisibility, setModalVisibility] = useState(true);
+	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productID, setProductID] = useState('');
 
-	const onSelectGender = (value: string): void => {};
+	const onSelectGender = (value: string): void => { };
 
 	const onSelectCategory = (value: string): void => {
 		//TO DO: this function need to store the selected value in array not single value
 	};
 
-	const onSelectTrends = (value: string): void => {};
+	const onSelectTrends = (value: string): void => { };
 
-	const onPressFilter = (): void => {};
+	const onPressFilter = (): void => { };
 
 	const onPressProductCard = (id: string): void => {
 		setProductID(id);
@@ -124,7 +124,7 @@ const Products = () => {
 					</div>
 				</div>
 			</div>
-			<ProductModal visible={modalVisibility} productId={productID} />
+			<ProductModal visible={modalVisibility} productId={productID} onPressClose={() => setModalVisibility(false)} />
 		</div>
 	);
 };

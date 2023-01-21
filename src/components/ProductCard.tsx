@@ -35,7 +35,8 @@ const ProductCard = ({
 };
 
 const productCardStyles = {
-	mainContainer: 'border shadow-md bg-white rounded-lg shadow-md',
+	mainContainer:
+		'border shadow-md bg-white rounded-lg shadow-md cursor-pointer',
 	image: 'mx-auto p-2 rounded-t-lg',
 	container: 'px-5 pb-5',
 	title: 'text-l font-semibold tracking-tight text-gray-900 dark:text-black',
