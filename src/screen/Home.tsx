@@ -3,7 +3,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { HomeCard, ProductCard } from '../components';
 import { fetchProducts } from '../redux/product';
-import { useAppSelector, useAppDispatch } from '../redux/hook'
+import { useAppSelector, useAppDispatch } from '../redux/hook';
 
 const carouselImage = [
 	'https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80',
@@ -16,9 +16,9 @@ const Home = () => {
 
 	useEffect(() => {
 		dispatch(fetchProducts());
-	}, [])
+	}, []);
 
-	const onPressBestSeller = (): void => { };
+	const onPressBestSeller = (): void => {};
 
 	return (
 		<div>
@@ -39,7 +39,7 @@ const Home = () => {
 					})}
 				</Carousel>
 			</div>
-			<div className="flex flex-row justify-between p-10">
+			<div className={homeStyles.homeCardContainer}>
 				<HomeCard
 					title="Support Local"
 					description="All the materials are come from local producers. Together we can create a strong and better community."
@@ -56,13 +56,13 @@ const Home = () => {
 					image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
 				/>
 			</div>
-			<div className="flex flex-col place-items-center">
+			<div className={homeStyles.bestSellerContainer}>
 				<label className="p-5 font-serif text-2xl font-semibold">
 					Best Seller
 				</label>
 				<div className="flex flex-row p-10">
 					<ProductCard
-						productID='1'
+						productID="1"
 						name="Support Local"
 						image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
 						onPress={onPressBestSeller}
@@ -70,13 +70,19 @@ const Home = () => {
 					/>
 				</div>
 			</div>
-			<div className="flex flex-col place-items-center">
+			<div className={homeStyles.bottomContainer}>
 				<label className="p-5 font-serif text-2xl font-semibold">
 					Trusted by our partners
 				</label>
 			</div>
 		</div>
 	);
+};
+
+const homeStyles = {
+	homeCardContainer: 'flex flex-row justify-between p-10',
+	bestSellerContainer: 'flex flex-col place-items-center',
+	bottomContainer: 'flex flex-col place-items-center',
 };
 
 export default Home;
