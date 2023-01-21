@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Checkbox, ProductCard, ProductModal } from '../components';
 import Shirt from '../assets/images/Shirt.png';
 import { useAppSelector } from '../redux/hook';
-import { Product } from '../interfaces';
+import { Product } from '../types';
 
 const Products = () => {
 	const products = useAppSelector(state => state.product.products);
-	const [modalVisibility, setModalVisibility] = useState<Boolean>(false);
-	const [productID, setProductID] = useState<string>('');
-	const onSelectGender = (value: string) => { };
+	const [modalVisibility, setModalVisibility] = useState(false);
+	const [productID, setProductID] = useState('');
+
+	const onSelectGender = (value: string): void => { };
+
 
 	const onSelectCategory = (value: string): void => {
 		//TO DO: this function need to store the selected value in array not single value
@@ -18,9 +20,7 @@ const Products = () => {
 
 	const onPressFilter = (): void => { };
 
-	const onPressProduct = (): void => { };
-
-	const onPressModal = (id: string): void => {
+	const onPressProductCard = (id: string): void => {
 		setProductID(id);
 		setModalVisibility(true);
 	};
@@ -124,9 +124,10 @@ const Products = () => {
 							products.map((product: Product, index: number) => {
 								return (<ProductCard
 									key={index}
+									productID={product.id}
 									name={product.title}
 									image={product.variants[0].image}
-									onPress={onPressProduct}
+									onPress={onPressProductCard}
 									price={product.variants[0].price}
 								/>)
 							})

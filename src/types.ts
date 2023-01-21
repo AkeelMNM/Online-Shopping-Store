@@ -1,12 +1,12 @@
-export interface Product {
-	id: string,
+export type Product = {
+    id: string,
     category: string[],
     title: string,
     isBestSeller: boolean,
     variants: Variant[]
 }
 
-interface Variant {
+type Variant = {
     id: string,
     size: string,
     color: string,

@@ -1,28 +1,29 @@
 import React from 'react';
 
-interface ProductCardProps {
+type ProductCardProps = {
+	productID: string,
 	name: string;
 	image: string;
 	price: string;
-	onPress: () => void;
+	onPress: (id: string) => void;
 }
 
-const ProductCard = (props: ProductCardProps) => {
+const ProductCard = ({ productID, name, image, price, onPress }: ProductCardProps) => {
 	return (
-		<div className="border shadow-md bg-white rounded-lg shadow-md">
+		<div className="border shadow-md bg-white rounded-lg shadow-md" onClick={() => onPress(productID)}>
 			<img
 				className="mx-auto p-2 rounded-t-lg"
-				src={props.image}
+				src={image}
 				alt="product image"
 			/>
 			<div className="px-5 pb-5">
 				<h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-black">
-					{props.name}
+					{name}
 				</h5>
 
 				<div className="flex items-center justify-between">
 					<span className="text-s font-bold text-gray-900 dark:text-black">
-						{props.price}
+						{price}
 					</span>
 				</div>
 			</div>

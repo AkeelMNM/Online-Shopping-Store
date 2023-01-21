@@ -1,15 +1,15 @@
 import React from 'react';
-import { Product } from '../interfaces';
+import { Product } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import Shirt from '../assets/images/Shirt.png';
 
-interface ProductModalProps {
+type ProductModalProps = {
 	visible: Boolean;
 	productId: string;
 }
 
-const ProductModal = (props: ProductModalProps) => {
-	if (props.visible) {
+const ProductModal = ({ visible, productId }: ProductModalProps) => {
+	if (visible) {
 		return (
 			<div className="fixed insert-0 right-0 left-0 top-0 bottom-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center">
 				<div className="flex flex-rows p-5 bg-white rounded">
