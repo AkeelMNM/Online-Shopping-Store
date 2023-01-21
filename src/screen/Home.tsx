@@ -18,7 +18,7 @@ const Home = () => {
 		dispatch(fetchProducts());
 	}, [])
 
-	const onPressBestSeller = () => { };
+	const onPressBestSeller = (): void => { };
 
 	return (
 		<div>

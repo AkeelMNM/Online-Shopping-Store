@@ -10,17 +10,17 @@ const Products = () => {
 	const [productID, setProductID] = useState<string>('');
 	const onSelectGender = (value: string) => { };
 
-	const onSelectCategory = (value: string) => {
+	const onSelectCategory = (value: string): void => {
 		//TO DO: this function need to store the selected value in array not single value
 	};
 
-	const onSelectTrends = (value: string) => { };
+	const onSelectTrends = (value: string): void => { };
 
-	const onPressFilter = () => { };
+	const onPressFilter = (): void => { };
 
-	const onPressProduct = () => { };
+	const onPressProduct = (): void => { };
 
-	const onPressModal = (id: string) => {
+	const onPressModal = (id: string): void => {
 		setProductID(id);
 		setModalVisibility(true);
 	};
