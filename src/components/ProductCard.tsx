@@ -14,6 +14,7 @@ const ProductCard = ({ name, image, price, onPress }: ProductCardProps) => {
 				className={productCardStyles.image}
 				src={image}
 				alt="product image"
+				crossOrigin="anonymous"
 			/>
 			<div className={productCardStyles.container}>
 				<h5 className={productCardStyles.title}>{name}</h5>
@@ -26,9 +27,8 @@ const ProductCard = ({ name, image, price, onPress }: ProductCardProps) => {
 };
 
 const productCardStyles = {
-	mainContainer:
-		'border shadow-md bg-white rounded-lg shadow-md cursor-pointer',
-	image: 'mx-auto p-2 rounded-t-lg',
+	mainContainer: 'border bg-white rounded-lg shadow-md cursor-pointer',
+	image: 'mx-auto p-2 rounded-t-lg w-40 h-48',
 	container: 'px-5 pb-5',
 	title: 'text-l font-semibold tracking-tight text-gray-900 dark:text-black',
 	priceContainer: 'flex items-center justify-between',

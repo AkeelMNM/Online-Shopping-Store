@@ -22,7 +22,7 @@ const Header = () => {
 				src={ShoppingCart}
 				alt="ShoppingCart"
 				onClick={() => {
-					navigate('/');
+					navigate('/cart');
 				}}
 			/>
 		</div>

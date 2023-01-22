@@ -68,6 +68,7 @@ const ProductModal = ({
 							alt="product-image"
 							className={productModalStyles.image}
 							src={product.variants[0].image}
+							crossOrigin="anonymous"
 						/>
 					</div>
 					<div className={productModalStyles.optionContainer}>
@@ -168,9 +169,9 @@ const productModalStyles = {
 	mainContainer:
 		'fixed insert-0 right-0 left-0 top-0 bottom-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center',
 	container: 'flex flex-rows p-5 bg-white rounded',
-	imageContainer: 'p-2 pr-5 w-full',
-	image: 'w-full lg:h-auto h-64 object-cover object-center rounded',
-	optionContainer: 'w-full',
+	imageContainer: 'p-2 pr-5 justify-center',
+	image: 'w-48 lg:h-auto h-40 object-cover object-center rounded',
+	optionContainer: 'w-72',
 	name: 'text-gray-900 text-2xl title-font font-medium mb-1',
 	colorContainer: 'flex pt-5',
 	labelText: 'mr-3',
