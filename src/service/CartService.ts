@@ -20,7 +20,7 @@ export const fetchCartItems = async (): Promise<Array<CartItem>> => {
 
 export const storeCartItems = async (
 	item: CartItem,
-): Promise<Array<CartItem> | string> => {
+): Promise<Array<CartItem>> => {
 	try {
 		const response = await fetch(`${API_NAME}/cart`, {
 			method: 'POST',
