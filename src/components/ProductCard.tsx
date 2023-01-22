@@ -7,16 +7,9 @@ type ProductCardProps = {
 	onPress: () => void;
 };
 
-const ProductCard = ({
-	name,
-	image,
-	price,
-	onPress,
-}: ProductCardProps) => {
+const ProductCard = ({ name, image, price, onPress }: ProductCardProps) => {
 	return (
-		<div
-			className={productCardStyles.mainContainer}
-			onClick={onPress}>
+		<div className={productCardStyles.mainContainer} onClick={onPress}>
 			<img
 				className={productCardStyles.image}
 				src={image}

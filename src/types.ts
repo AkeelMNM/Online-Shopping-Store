@@ -17,9 +17,9 @@ type Variant = {
 };
 
 export type CartItem = {
-	id: string,
-	color: string,
-	size: string,
-	price: string,
-	quantity: number
-}
+	id: string;
+	color: string;
+	size: string;
+	price: string;
+	quantity: number;
+};

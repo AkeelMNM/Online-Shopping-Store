@@ -26,15 +26,15 @@ const Products = () => {
 		dispatch(fetchProducts());
 	}, []);
 
-	const onSelectGender = (value: string): void => { };
+	const onSelectGender = (value: string): void => {};
 
 	const onSelectCategory = (value: string): void => {
 		//TO DO: this function need to store the selected value in array not single value
 	};
 
-	const onSelectTrends = (value: string): void => { };
+	const onSelectTrends = (value: string): void => {};
 
-	const onPressFilter = (): void => { };
+	const onPressFilter = (): void => {};
 
 	const onPressProductCard = (id: string): void => {
 		setProductID(id);
@@ -108,7 +108,9 @@ const Products = () => {
 										key={product.id}
 										name={product.title}
 										image={product.variants[0].image}
-										onPress={() => onPressProductCard(product.id)}
+										onPress={() =>
+											onPressProductCard(product.id)
+										}
 										price={product.variants[0].price}
 									/>
 								);
@@ -128,7 +130,11 @@ const Products = () => {
 					</div>
 				</div>
 			</div>
-			<ProductModal visible={modalVisibility} productId={productID} onPressClose={() => setModalVisibility(false)} />
+			<ProductModal
+				visible={modalVisibility}
+				productId={productID}
+				onPressClose={() => setModalVisibility(false)}
+			/>
 		</div>
 	);
 };

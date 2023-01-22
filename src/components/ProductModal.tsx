@@ -15,7 +15,6 @@ const ProductModal = ({
 	productId,
 	onPressClose,
 }: ProductModalProps) => {
-
 	const product: Product = useAppSelector(state => {
 		return state.product.products.find((item: Product) => {
 			return item.id === productId;
@@ -34,20 +33,23 @@ const ProductModal = ({
 			color: selectedColor,
 			price: product.variants[0].price,
 			size: selectedSize,
-			quantity: selectedCount
-		}
+			quantity: selectedCount,
+		};
 
 		console.log(cartItem);
 		onPressClose();
-
-	}
-
+	};
 
 	if (visible) {
 		return (
 			<div className={productModalStyles.mainContainer}>
-				<div className={productModalStyles.closeContainer} onClick={onPressClose}>
-					<svg xmlns="http://www.w3.org/2000/svg" height="48" width="48">
+				<div
+					className={productModalStyles.closeContainer}
+					onClick={onPressClose}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						height="48"
+						width="48">
 						<path d="m16.5 33.6 7.5-7.5 7.5 7.5 2.1-2.1-7.5-7.5 7.5-7.5-2.1-2.1-7.5 7.5-7.5-7.5-2.1 2.1 7.5 7.5-7.5 7.5ZM24 44q-4.1 0-7.75-1.575-3.65-1.575-6.375-4.3-2.725-2.725-4.3-6.375Q4 28.1 4 24q0-4.15 1.575-7.8 1.575-3.65 4.3-6.35 2.725-2.7 6.375-4.275Q19.9 4 24 4q4.15 0 7.8 1.575 3.65 1.575 6.35 4.275 2.7 2.7 4.275 6.35Q44 19.85 44 24q0 4.1-1.575 7.75-1.575 3.65-4.275 6.375t-6.35 4.3Q28.15 44 24 44Zm0-3q7.1 0 12.05-4.975Q41 31.05 41 24q0-7.1-4.95-12.05Q31.1 7 24 7q-7.05 0-12.025 4.95Q7 16.9 7 24q0 7.05 4.975 12.025Q16.95 41 24 41Zm0-17Z" />
 					</svg>
 				</div>
@@ -67,12 +69,18 @@ const ProductModal = ({
 							<span className={productModalStyles.labelText}>
 								Color
 							</span>
-							{
-								productColors && productColors.map((item, index) => {
-									return <button key={index}
-										className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`} onClick={() => setSelectedColor(item.color)} />
-								})
-							}
+							{productColors &&
+								productColors.map((item, index) => {
+									return (
+										<button
+											key={index}
+											className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`}
+											onClick={() =>
+												setSelectedColor(item.color)
+											}
+										/>
+									);
+								})}
 							{/* <button
 								className={
 									productModalStyles.productColor
@@ -88,15 +96,20 @@ const ProductModal = ({
 							</span>
 							<div className={productModalStyles.selectDiv}>
 								<select
-									onChange={(e) => setSelectedSize(e.target.value)}
+									onChange={e =>
+										setSelectedSize(e.target.value)
+									}
 									className={
 										productModalStyles.selectContainer
 									}>
-									{
-										productSizes && productSizes.map((item, index) => {
-											return <option key={index}>{item.size}</option>
-										})
-									}
+									{productSizes &&
+										productSizes.map((item, index) => {
+											return (
+												<option key={index}>
+													{item.size}
+												</option>
+											);
+										})}
 								</select>
 								<span className={productModalStyles.arrowSvg}>
 									<svg
@@ -116,13 +129,20 @@ const ProductModal = ({
 							<span className={productModalStyles.labelText}>
 								Quantity
 							</span>
-							<QuantityPicker smooth max={5} value={1} onChange={(value) => setSelectedCount(value)} />
+							<QuantityPicker
+								smooth
+								max={5}
+								value={1}
+								onChange={value => setSelectedCount(value)}
+							/>
 						</div>
 						<span className={productModalStyles.priceText}>
 							{product.variants[0].price}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
-							<button className={productModalStyles.button} onClick={onPressAddToCart}>
+							<button
+								className={productModalStyles.button}
+								onClick={onPressAddToCart}>
 								Add to Cart
 							</button>
 						</div>
@@ -158,7 +178,7 @@ const productModalStyles = {
 	button: 'w-full ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded',
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
-	closeContainer: 'absolute top-0 right-0 cursor-pointer'
+	closeContainer: 'absolute top-0 right-0 cursor-pointer',
 };
 
 export { ProductModal };
