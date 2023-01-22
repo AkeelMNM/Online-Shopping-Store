@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { CartItem, Product } from '../types';
+import { CartItem, Product, Variant } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
-import { useAppSelector } from '../redux/hook';
+import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
+import { AddItemToCart } from '../redux/cart';
 
 type ProductModalProps = {
 	visible: Boolean;
@@ -20,6 +21,7 @@ const ProductModal = ({
 			return item.id === productId;
 		});
 	});
+	const dispatch = useAppDispatch();
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState('');
 	const [selectedCount, setSelectedCount] = useState(0);
@@ -28,16 +30,23 @@ const ProductModal = ({
 	const productSizes = _.uniqBy(product && product.variants, 'size');
 
 	const onPressAddToCart = () => {
-		const cartItem: CartItem = {
-			id: product.id,
+		const variant = _.find(product.variants, {
 			color: selectedColor,
-			price: product.variants[0].price,
 			size: selectedSize,
-			quantity: selectedCount,
-		};
+		});
 
-		console.log(cartItem);
-		onPressClose();
+		if (variant) {
+			const cartItem: CartItem = {
+				id: product.id,
+				variantId: variant.id,
+				quantity: selectedCount,
+			};
+
+			dispatch(AddItemToCart(cartItem));
+			onPressClose();
+		} else {
+			alert('Sorry this product not available');
+		}
 	};
 
 	if (visible) {

@@ -6,7 +6,7 @@ export type Product = {
 	variants: Variant[];
 };
 
-type Variant = {
+export type Variant = {
 	id: string;
 	size: string;
 	color: string;
@@ -18,8 +18,6 @@ type Variant = {
 
 export type CartItem = {
 	id: string;
-	color: string;
-	size: string;
-	price: string;
+	variantId: string;
 	quantity: number;
 };
