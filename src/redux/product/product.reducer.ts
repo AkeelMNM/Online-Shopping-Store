@@ -4,7 +4,7 @@ import {
 	FETCH_PRODUCTS_REQUEST,
 	FETCH_PRODUCTS_SUCCESS,
 } from './product.types';
-import { Product } from '../../interfaces';
+import { Product } from '../../types';
 
 const initialState = {
 	products: new Array<Product>(),
