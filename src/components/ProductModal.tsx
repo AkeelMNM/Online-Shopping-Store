@@ -1,7 +1,8 @@
-import React from 'react';
-import { Product } from '../types';
+import React, { useEffect, useState } from 'react';
+import { CartItem, Product } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
-import Shirt from '../assets/images/Shirt.png';
+import { useAppSelector } from '../redux/hook';
+import _ from 'lodash';
 
 type ProductModalProps = {
 	visible: Boolean;
@@ -14,6 +15,34 @@ const ProductModal = ({
 	productId,
 	onPressClose,
 }: ProductModalProps) => {
+
+	const product: Product = useAppSelector(state => {
+		return state.product.products.find((item: Product) => {
+			return item.id === productId;
+		});
+	});
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedSize, setSelectedSize] = useState('');
+	const [selectedCount, setSelectedCount] = useState(0);
+
+	const productColors = _.uniqBy(product && product.variants, 'color');
+	const productSizes = _.uniqBy(product && product.variants, 'size');
+
+	const onPressAddToCart = () => {
+		const cartItem: CartItem = {
+			id: product.id,
+			color: selectedColor,
+			price: product.variants[0].price,
+			size: selectedSize,
+			quantity: selectedCount
+		}
+
+		console.log(cartItem);
+		onPressClose();
+
+	}
+
+
 	if (visible) {
 		return (
 			<div className={productModalStyles.mainContainer}>
@@ -27,25 +56,31 @@ const ProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={Shirt}
+							src={product.variants[0].image}
 						/>
 					</div>
 					<div className={productModalStyles.optionContainer}>
 						<h1 className={productModalStyles.name}>
-							Blue Dress v2
+							{product.title}
 						</h1>
 						<div className={productModalStyles.colorContainer}>
 							<span className={productModalStyles.labelText}>
 								Color
 							</span>
-							<button
+							{
+								productColors && productColors.map((item, index) => {
+									return <button key={index}
+										className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`} onClick={() => setSelectedColor(item.color)} />
+								})
+							}
+							{/* <button
 								className={
 									productModalStyles.productColor
 								}></button>
 							<button
 								className={`${productModalStyles.productColor} ml-1 bg-gray-700`}></button>
 							<button
-								className={`${productModalStyles.productColor} ml-1 bg-indigo-500`}></button>
+								className={`${productModalStyles.productColor} ml-1 bg-indigo-500`}></button> */}
 						</div>
 						<div className={productModalStyles.sizeContainer}>
 							<span className={productModalStyles.labelText}>
@@ -53,21 +88,23 @@ const ProductModal = ({
 							</span>
 							<div className={productModalStyles.selectDiv}>
 								<select
+									onChange={(e) => setSelectedSize(e.target.value)}
 									className={
 										productModalStyles.selectContainer
 									}>
-									<option>SM</option>
-									<option>M</option>
-									<option>L</option>
-									<option>XL</option>
+									{
+										productSizes && productSizes.map((item, index) => {
+											return <option key={index}>{item.size}</option>
+										})
+									}
 								</select>
 								<span className={productModalStyles.arrowSvg}>
 									<svg
 										fill="none"
 										stroke="currentColor"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
 										className={productModalStyles.svg}
 										viewBox="0 0 24 24">
 										<path d="M6 9l6 6 6-6"></path>
@@ -79,13 +116,13 @@ const ProductModal = ({
 							<span className={productModalStyles.labelText}>
 								Quantity
 							</span>
-							<QuantityPicker smooth max={5} value={1} />
+							<QuantityPicker smooth max={5} value={1} onChange={(value) => setSelectedCount(value)} />
 						</div>
 						<span className={productModalStyles.priceText}>
-							$45.99
+							{product.variants[0].price}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
-							<button className={productModalStyles.button}>
+							<button className={productModalStyles.button} onClick={onPressAddToCart}>
 								Add to Cart
 							</button>
 						</div>
@@ -105,7 +142,7 @@ const productModalStyles = {
 	imageContainer: 'p-2 pr-5 w-full',
 	image: 'w-full lg:h-auto h-64 object-cover object-center rounded',
 	optionContainer: 'w-full',
-	name: 'text-gray-900 text-3xl title-font font-medium mb-1',
+	name: 'text-gray-900 text-2xl title-font font-medium mb-1',
 	colorContainer: 'flex pt-5',
 	labelText: 'mr-3',
 	productColor:

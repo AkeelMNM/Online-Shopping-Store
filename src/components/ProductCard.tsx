@@ -1,15 +1,13 @@
 import React from 'react';
 
 type ProductCardProps = {
-	productID: string;
 	name: string;
 	image: string;
 	price: string;
-	onPress: (id: string) => void;
+	onPress: () => void;
 };
 
 const ProductCard = ({
-	productID,
 	name,
 	image,
 	price,
@@ -18,7 +16,7 @@ const ProductCard = ({
 	return (
 		<div
 			className={productCardStyles.mainContainer}
-			onClick={() => onPress(productID)}>
+			onClick={onPress}>
 			<img
 				className={productCardStyles.image}
 				src={image}

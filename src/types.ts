@@ -15,3 +15,11 @@ type Variant = {
 	discount: string;
 	image: string;
 };
+
+export type CartItem = {
+	id: string,
+	color: string,
+	size: string,
+	price: string,
+	quantity: number
+}

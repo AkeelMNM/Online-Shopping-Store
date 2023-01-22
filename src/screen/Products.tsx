@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, ProductCard, ProductModal } from '../components';
-import Shirt from '../assets/images/Shirt.png';
-import { useAppSelector } from '../redux/hook';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { Product } from '../types';
+import { fetchProducts } from '../redux/product';
 
 const GENDER: string[] = ['Male', 'Female', 'Unisex'];
 const CATEGORY: string[] = [
@@ -17,9 +17,14 @@ const CATEGORY: string[] = [
 const TRENDS: string[] = ['Best Seller', 'Hot This Month'];
 
 const Products = () => {
+	const dispatch = useAppDispatch();
 	const products: Product[] = useAppSelector(state => state.product.products);
 	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productID, setProductID] = useState('');
+
+	useEffect(() => {
+		dispatch(fetchProducts());
+	}, []);
 
 	const onSelectGender = (value: string): void => { };
 
@@ -101,10 +106,9 @@ const Products = () => {
 								return (
 									<ProductCard
 										key={product.id}
-										productID={product.id}
 										name={product.title}
 										image={product.variants[0].image}
-										onPress={onPressProductCard}
+										onPress={() => onPressProductCard(product.id)}
 										price={product.variants[0].price}
 									/>
 								);
