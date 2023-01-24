@@ -7,7 +7,11 @@ const Header = () => {
 
 	return (
 		<div className={headerStyles.mainContainer}>
-			<label onClick={() => navigate('/')} className={headerStyles.headText}>Fashion Studio</label>
+			<label
+				onClick={() => navigate('/')}
+				className={headerStyles.headText}>
+				Fashion Studio
+			</label>
 			<div className={headerStyles.btnContainer}>
 				<button
 					className={headerStyles.productBtn}
