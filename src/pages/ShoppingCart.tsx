@@ -1,79 +1,163 @@
 import React, { useState } from 'react';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
 import { Input } from '../components';
+import { useAppSelector, useAppDispatch } from '../redux/hook';
+import * as PaymentService from '../services/PaymentService';
+import { CartItem, Invoice } from '../types';
 
-type CartItemProps = {
-	isFreeShipping: boolean;
+type CartProps = {
 	title: string;
 	size: string;
 	color: string;
 	quantity: number;
-	subTotal: number;
+	price: number;
 	image: string;
 };
 
-const CartItem = ({
+const INITIAL_STATE: Invoice = {
+	fullName: '',
+	address: '',
+	city: '',
+	province: '',
+	mobileNo: '',
+};
+
+const ERROR_INITIAL_STATE = {
+	fullNameErr: '',
+	addressErr: '',
+	cityErr: '',
+	provinceErr: '',
+	mobileNoErr: '',
+};
+
+const Cart = ({
 	title,
 	size,
 	color,
 	quantity,
-	subTotal,
-	isFreeShipping,
+	price,
 	image,
-}: CartItemProps) => {
+}: CartProps) => {
 	return (
 		<div className={cartStyles.itemContainer}>
-			{isFreeShipping && (
-				<img
-					src={image}
-					crossOrigin="anonymous"
-					className={cartStyles.freeimage}
-				/>
-			)}
+			<img
+				src={image}
+				crossOrigin="anonymous"
+				className={cartStyles.itemImage}
+			/>
 			<div className={cartStyles.itemDescContainer}>
 				<label className={cartStyles.titleText}>{title}</label>
-				<label className={cartStyles.itemText}>{size}</label>
-				<label className={cartStyles.itemText}>{color}</label>
+				<label>{size}</label>
+				<label>{color}</label>
 			</div>
 			<label className={cartStyles.itemText}>Qty: {quantity}</label>
-			<label className={cartStyles.itemText}>SubTotal: {subTotal}</label>
+			<label className={cartStyles.itemText}>
+				SubTotal: {price * quantity}
+			</label>
 		</div>
 	);
 };
 
 const ShoppingCart = () => {
-	const [formData, setFormData] = useState({
-		fullName: '',
-		address: '',
-		city: '',
-		province: '',
-		mobileNo: '',
-	});
+	const dispatch = useAppDispatch();
+	const cart: CartItem[] = useAppSelector(state => state.cart.cart);
+	const [formData, setFormData] = useState<Invoice>(INITIAL_STATE);
+	const [fromError, setFormError] = useState(ERROR_INITIAL_STATE);
 
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		e.preventDefault();
 		const { name, value } = e.target;
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const onSubmitBill = (): void => {};
+	const validateInputFields = (): boolean => {
+		let isFormValid: boolean = true;
+
+		if (!formData.fullName && formData.fullName === '') {
+			isFormValid = false;
+			setFormError(prevState => {
+				return {
+					...prevState,
+					fullNameErr: 'Please Enter Your Full Name',
+				};
+			});
+		}
+
+		if (!formData.address && formData.address === '') {
+			isFormValid = false;
+			setFormError(prevState => {
+				return {
+					...prevState,
+					addressErr: 'Please Enter Your Address',
+				};
+			});
+		}
+
+		if (!formData.city && formData.city === '') {
+			isFormValid = false;
+			setFormError(prevState => {
+				return {
+					...prevState,
+					cityErr: 'Please Enter Your City',
+				};
+			});
+		}
+
+		if (!formData.province && formData.province === '') {
+			isFormValid = false;
+			setFormError(prevState => {
+				return {
+					...prevState,
+					provinceErr: 'Please Enter Your Province',
+				};
+			});
+		}
+
+		if (!formData.mobileNo && formData.mobileNo === '') {
+			isFormValid = false;
+			setFormError(prevState => {
+				return {
+					...prevState,
+					mobileNoErr: 'Please Enter Your Mobile Number',
+				};
+			});
+		}
+		return isFormValid;
+	};
+
+	const onSubmitBill = async (
+		e: React.MouseEvent<HTMLInputElement>,
+	): Promise<void> => {
+		e.preventDefault();
+		if (validateInputFields()) {
+			const response = await PaymentService.makePayment(formData);
+			setFormData(INITIAL_STATE);
+			setFormError(ERROR_INITIAL_STATE);
+		}
+	};
 
 	return (
 		<div className={cartStyles.mainContainer}>
 			<div className={cartStyles.productContainer}>
 				<div className={cartStyles.itemCountContainer}>
-					<label className={cartStyles.itemCountText}>Item: 1</label>
+					<label className={cartStyles.itemCountText}>Item: {cart.length}</label>
 					<img src={FreeDelivery} className={cartStyles.freeimage} />
 				</div>
-				<div className={cartStyles.itemContainer}>
-					<img src={FreeDelivery} className={cartStyles.freeimage} />
-					<div className={cartStyles.itemDescContainer}>
-						<label className={cartStyles.titleText}>title</label>
-						<label className={cartStyles.itemText}>size</label>
-						<label className={cartStyles.itemText}>color</label>
-					</div>
-					<label className={cartStyles.itemText}>Qty: 1</label>
-					<label className={cartStyles.itemText}>SubTotal: 1</label>
-				</div>
+				{cart &&
+					cart.map((item, index) => {
+						return (
+							<Cart
+								key={index}
+								color={item.color}
+								image={item.image}
+								isFreeShipping={item.isFreeShipping}
+								quantity={item.quantity}
+								size={item.size}
+								title={item.title}
+								price={item.price}
+							/>
+						);
+					})}
 				<div className={cartStyles.itemCountContainer}>
 					<label className={cartStyles.itemCountText}>Total</label>
 					<label className={cartStyles.itemCountText}>$40</label>
@@ -90,7 +174,7 @@ const ShoppingCart = () => {
 						value={formData.fullName}
 						onChangeInput={onChangeInput}
 						label="Complete Name (FirstName, LastName)"
-						required={true}
+						error={fromError.fullNameErr}
 					/>
 					<Input
 						name="address"
@@ -98,7 +182,7 @@ const ShoppingCart = () => {
 						value={formData.address}
 						onChangeInput={onChangeInput}
 						label="Full Address"
-						required={true}
+						error={fromError.addressErr}
 					/>
 					<Input
 						name="city"
@@ -106,7 +190,7 @@ const ShoppingCart = () => {
 						value={formData.city}
 						onChangeInput={onChangeInput}
 						label="City"
-						required={true}
+						error={fromError.cityErr}
 					/>
 					<Input
 						name="province"
@@ -114,7 +198,7 @@ const ShoppingCart = () => {
 						value={formData.province}
 						onChangeInput={onChangeInput}
 						label="State/Province"
-						required={true}
+						error={fromError.provinceErr}
 					/>
 					<Input
 						name="mobileNo"
@@ -122,7 +206,7 @@ const ShoppingCart = () => {
 						value={formData.mobileNo}
 						onChangeInput={onChangeInput}
 						label="Mobile #"
-						required={true}
+						error={fromError.mobileNoErr}
 					/>
 					<input
 						type="submit"
@@ -144,11 +228,12 @@ const cartStyles = {
 	itemCountContainer:
 		'flex flex-row justify-between shadow-md rounded p-2 mb-4',
 	itemCountText: 'mt-4 pt-2 font-semibold',
-	freeimage: 'w-48 h-20',
-	itemContainer: 'flex flex-row justify-between shadow-md rounded p-2',
+	freeimage: 'w-30 h-20',
+	itemContainer: 'grid grid-cols-4 shadow-md rounded p-4 items-center',
 	itemDescContainer: 'flex flex-col',
-	titleText: 'text-gray-900 text-2xl title-font font-medium mb-1',
-	itemText: '',
+	titleText: 'text-gray-900 text-lg title-font font-medium mb-1',
+	itemText: 'justify-self-center',
+	itemImage: 'w-20 h-40 justify-self-center',
 	billText: 'text-2xl font-bold',
 	form: 'mt-4',
 	submitButton:

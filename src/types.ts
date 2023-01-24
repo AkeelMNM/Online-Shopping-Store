@@ -19,5 +19,19 @@ export type Variant = {
 export type CartItem = {
 	id: string;
 	variantId: string;
+	title: string;
+	size: string;
+	color: string;
 	quantity: number;
+	price: number;
+	isFreeShipping: boolean;
+	image: string;
+};
+
+export type Invoice = {
+	fullName: string;
+	address: string;
+	city: string;
+	province: string;
+	mobileNo: string;
 };

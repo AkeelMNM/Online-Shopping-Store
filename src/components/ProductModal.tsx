@@ -40,6 +40,12 @@ const ProductModal = ({
 				id: product.id,
 				variantId: variant.id,
 				quantity: selectedCount,
+				title: product.title,
+				size: variant.size,
+				color: variant.color,
+				price: parseInt(variant.price.replace(/\D/g, "")),
+				isFreeShipping: false,
+				image: variant.image,
 			};
 
 			dispatch(AddItemToCart(cartItem));
