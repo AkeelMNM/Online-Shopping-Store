@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
+import { Input } from '../components';
 
 type CartItemProps = {
 	isFreeShipping: boolean;
@@ -9,13 +10,6 @@ type CartItemProps = {
 	quantity: number;
 	subTotal: number;
 	image: string;
-};
-
-type InputProps = {
-	label: string;
-	value: string;
-	type: string;
-	onChange: (value: string) => void;
 };
 
 const CartItem = ({
@@ -47,27 +41,21 @@ const CartItem = ({
 	);
 };
 
-const Input = ({ label, onChange, value, type }: InputProps) => {
-	return (
-		<div className={cartStyles.inputContainer}>
-			<label className={cartStyles.inputLabel}>{label}</label>
-			<input
-				type={type}
-				value={value}
-				onChange={e => onChange(e.target.value)}
-				className={cartStyles.input}></input>
-		</div>
-	);
-};
-
 const ShoppingCart = () => {
-	const [fullName, setFullName] = useState('');
-	const [address, setAddress] = useState('');
-	const [city, setCity] = useState('');
-	const [province, setProvince] = useState('');
-	const [mobileNo, setMobileNo] = useState('');
+	const [formData, setFormData] = useState({
+		fullName: '',
+		address: '',
+		city: '',
+		province: '',
+		mobileNo: '',
+	});
 
-	const onSubmitBill = () => {};
+	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
+	};
+
+	const onSubmitBill = (): void => {};
 
 	return (
 		<div className={cartStyles.mainContainer}>
@@ -97,34 +85,44 @@ const ShoppingCart = () => {
 				</label>
 				<form className={cartStyles.form}>
 					<Input
+						name="fullName"
 						type="text"
-						value={fullName}
-						onChange={setFullName}
+						value={formData.fullName}
+						onChangeInput={onChangeInput}
 						label="Complete Name (FirstName, LastName)"
+						required={true}
 					/>
 					<Input
+						name="address"
 						type="text"
-						value={address}
-						onChange={setAddress}
+						value={formData.address}
+						onChangeInput={onChangeInput}
 						label="Full Address"
+						required={true}
 					/>
 					<Input
+						name="city"
 						type="text"
-						value={city}
-						onChange={setCity}
+						value={formData.city}
+						onChangeInput={onChangeInput}
 						label="City"
+						required={true}
 					/>
 					<Input
+						name="province"
 						type="text"
-						value={province}
-						onChange={setProvince}
+						value={formData.province}
+						onChangeInput={onChangeInput}
 						label="State/Province"
+						required={true}
 					/>
 					<Input
+						name="mobileNo"
 						type="text"
-						value={mobileNo}
-						onChange={setMobileNo}
+						value={formData.mobileNo}
+						onChangeInput={onChangeInput}
 						label="Mobile #"
+						required={true}
 					/>
 					<input
 						type="submit"
@@ -151,11 +149,8 @@ const cartStyles = {
 	itemDescContainer: 'flex flex-col',
 	titleText: 'text-gray-900 text-2xl title-font font-medium mb-1',
 	itemText: '',
-	inputContainer: 'mb-4',
 	billText: 'text-2xl font-bold',
 	form: 'mt-4',
-	inputLabel: 'block mb-2 text-sm font-medium text-gray-900 ',
-	input: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
 	submitButton:
 		'text-white bg-[#FF9119] hover:bg-[#FF9119] focus:ring-1 focus:outline-none focus:ring-[#FF9119] font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-[#FF9119] dark:hover:bg-[#FF9119] dark:focus:ring-[#FF9119]',
 };

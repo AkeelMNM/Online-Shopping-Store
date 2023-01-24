@@ -6,9 +6,9 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { Footer, Header } from './components';
-import Home from './screen/Home';
-import Products from './screen/Products';
-import ShoppingCart from './screen/ShoppingCart';
+import Home from './pages/Home';
+import Products from './pages/Products';
+import ShoppingCart from './pages/ShoppingCart';
 
 const App = () => {
 	return (

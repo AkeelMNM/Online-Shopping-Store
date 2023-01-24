@@ -4,7 +4,7 @@ import {
 	FETCH_PRODUCTS_REQUEST,
 	FETCH_PRODUCTS_SUCCESS,
 } from './product.types';
-import * as productService from '../../service/ProductService';
+import * as productService from '../../services/ProductService';
 
 export const fetchProducts = () => {
 	return async (dispatch: Dispatch) => {

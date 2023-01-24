@@ -7,7 +7,7 @@ import {
 	ADD_TO_CART_SUCCESS,
 	ADD_TO_CART_ERROR,
 } from './cart.types';
-import * as cartService from '../../service/CartService';
+import * as cartService from '../../services/CartService';
 import { CartItem } from '../../types';
 
 export const fetchCartItems = () => {
