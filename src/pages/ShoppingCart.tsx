@@ -30,14 +30,7 @@ const ERROR_INITIAL_STATE = {
 	mobileNoErr: '',
 };
 
-const Cart = ({
-	title,
-	size,
-	color,
-	quantity,
-	price,
-	image,
-}: CartProps) => {
+const Cart = ({ title, size, color, quantity, price, image }: CartProps) => {
 	return (
 		<div className={cartStyles.itemContainer}>
 			<img
@@ -140,7 +133,9 @@ const ShoppingCart = () => {
 		<div className={cartStyles.mainContainer}>
 			<div className={cartStyles.productContainer}>
 				<div className={cartStyles.itemCountContainer}>
-					<label className={cartStyles.itemCountText}>Item: {cart.length}</label>
+					<label className={cartStyles.itemCountText}>
+						Item: {cart.length}
+					</label>
 					<img src={FreeDelivery} className={cartStyles.freeimage} />
 				</div>
 				{cart &&

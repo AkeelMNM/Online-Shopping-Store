@@ -2,28 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox, ProductCard, ProductModal } from '../components';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { Product } from '../types';
-import { fetchProducts } from '../redux/product';
-
-const GENDER: string[] = ['Male', 'Female', 'Unisex'];
-const CATEGORY: string[] = [
-	'Long Sleeve',
-	'Slim Fit',
-	'Short Sleeve',
-	'Short',
-	'Summer',
-	'Polo',
-	'Dress',
-];
-const TRENDS: string[] = ['Best Seller', 'Hot This Month'];
+import { fetchProducts, fetchProductsFilters } from '../redux/product';
 
 const Products = () => {
 	const dispatch = useAppDispatch();
 	const products: Product[] = useAppSelector(state => state.product.products);
+	const productFilter = useAppSelector(state => state.product.productFilter);
 	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productID, setProductID] = useState('');
 
 	useEffect(() => {
 		dispatch(fetchProducts());
+		dispatch(fetchProductsFilters());
 	}, []);
 
 	const onSelectGender = (value: string): void => {};
@@ -52,57 +42,69 @@ const Products = () => {
 					</button>
 					<h3 className={productStyles.filterTitle}>Gender</h3>
 					<ul className={productStyles.filterOrderList}>
-						{GENDER &&
-							GENDER.map((value, index) => {
-								return (
-									<li
-										key={index}
-										className={productStyles.filterList}>
-										<Checkbox
-											value={value}
-											onSelect={() =>
-												onSelectGender(value)
-											}
-										/>
-									</li>
-								);
-							})}
+						{productFilter.gender &&
+							productFilter.gender.map(
+								(value: string, index: number) => {
+									return (
+										<li
+											key={index}
+											className={
+												productStyles.filterList
+											}>
+											<Checkbox
+												value={value}
+												onSelect={() =>
+													onSelectGender(value)
+												}
+											/>
+										</li>
+									);
+								},
+							)}
 					</ul>
 					<h3 className={productStyles.filterTitle}>Category</h3>
 					<ul className={productStyles.filterOrderList}>
-						{CATEGORY &&
-							CATEGORY.map((value, index) => {
-								return (
-									<li
-										key={index}
-										className={productStyles.filterList}>
-										<Checkbox
-											value={value}
-											onSelect={() =>
-												onSelectCategory(value)
-											}
-										/>
-									</li>
-								);
-							})}
+						{productFilter.category &&
+							productFilter.category.map(
+								(value: string, index: number) => {
+									return (
+										<li
+											key={index}
+											className={
+												productStyles.filterList
+											}>
+											<Checkbox
+												value={value}
+												onSelect={() =>
+													onSelectCategory(value)
+												}
+											/>
+										</li>
+									);
+								},
+							)}
 					</ul>
 					<h3 className={productStyles.filterTitle}>Trends</h3>
 					<ul className={productStyles.filterOrderList}>
-						{TRENDS &&
-							TRENDS.map((value, index) => {
-								return (
-									<li
-										key={index}
-										className={productStyles.filterList}>
-										<Checkbox
-											value={value}
-											onSelect={() =>
-												onSelectTrends(value)
-											}
-										/>
-									</li>
-								);
-							})}
+						{productFilter.trends &&
+							productFilter.trends.map(
+								(value: string, index: number) => {
+									return (
+										<li
+											key={index}
+											className={
+												productStyles.filterList
+											}>
+											<Checkbox
+												value={value}
+												onSelect={() =>
+													onSelectTrends(value)
+												}
+											/>
+										</li>
+									);
+								},
+							)}
 					</ul>
 				</div>
 				<div className={productStyles.productContainer}>
