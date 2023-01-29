@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
-import { Input } from '../components';
+import { CartProductModal, Input } from '../components';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
 import { CartItem, Invoice } from '../types';
@@ -12,6 +12,7 @@ type CartProps = {
 	quantity: number;
 	price: number;
 	image: string;
+	onPressEdit: () => void;
 };
 
 const INITIAL_STATE: Invoice = {
@@ -30,7 +31,15 @@ const ERROR_INITIAL_STATE = {
 	mobileNoErr: '',
 };
 
-const Cart = ({ title, size, color, quantity, price, image }: CartProps) => {
+const Cart = ({
+	title,
+	size,
+	color,
+	quantity,
+	price,
+	image,
+	onPressEdit,
+}: CartProps) => {
 	return (
 		<div className={cartStyles.itemContainer}>
 			<img
@@ -47,6 +56,9 @@ const Cart = ({ title, size, color, quantity, price, image }: CartProps) => {
 			<label className={cartStyles.itemText}>
 				SubTotal: {price * quantity}
 			</label>
+			<button className={cartStyles.editButton} onClick={onPressEdit}>
+				Edit
+			</button>
 		</div>
 	);
 };
@@ -56,11 +68,20 @@ const ShoppingCart = () => {
 	const cart: CartItem[] = useAppSelector(state => state.cart.cart);
 	const [formData, setFormData] = useState<Invoice>(INITIAL_STATE);
 	const [fromError, setFormError] = useState(ERROR_INITIAL_STATE);
+	const [modalVisibility, setModalVisibility] = useState(false);
+	const [productId, setProductId] = useState('');
+	const [cartItemId, setCartItemId] = useState('');
 
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		e.preventDefault();
 		const { name, value } = e.target;
 		setFormData({ ...formData, [name]: value });
+	};
+
+	const onPressUpdateCart = (productId: string, cartItemId: string) => {
+		setProductId(productId);
+		setCartItemId(cartItemId);
+		setModalVisibility(true);
 	};
 
 	const validateInputFields = (): boolean => {
@@ -145,11 +166,17 @@ const ShoppingCart = () => {
 								key={index}
 								color={item.color}
 								image={item.image}
-								isFreeShipping={item.isFreeShipping}
+								//isFreeShipping={item.isFreeShipping}
 								quantity={item.quantity}
 								size={item.size}
 								title={item.title}
 								price={item.price}
+								onPressEdit={() =>
+									onPressUpdateCart(
+										item.productId,
+										item._id || '',
+									)
+								}
 							/>
 						);
 					})}
@@ -211,6 +238,12 @@ const ShoppingCart = () => {
 					/>
 				</form>
 			</div>
+			<CartProductModal
+				visible={modalVisibility}
+				productId={productId}
+				cartItemId={cartItemId}
+				onPressClose={() => setModalVisibility(false)}
+			/>
 		</div>
 	);
 };
@@ -224,15 +257,17 @@ const cartStyles = {
 		'flex flex-row justify-between shadow-md rounded p-2 mb-4',
 	itemCountText: 'mt-4 pt-2 font-semibold',
 	freeimage: 'w-30 h-20',
-	itemContainer: 'grid grid-cols-4 shadow-md rounded p-4 items-center',
-	itemDescContainer: 'flex flex-col',
-	titleText: 'text-gray-900 text-lg title-font font-medium mb-1',
+	itemContainer: 'grid grid-cols-6 shadow-md rounded p-4 items-center',
+	itemDescContainer: 'flex flex-col pl-4 col-span-2',
+	titleText: 'text-gray-900 w-full text-lg title-font font-medium mb-1',
 	itemText: 'justify-self-center',
-	itemImage: 'w-20 h-40 justify-self-center',
+	itemImage: 'w-28 h-40 justify-self-center',
 	billText: 'text-2xl font-bold',
 	form: 'mt-4',
 	submitButton:
 		'text-white bg-[#FF9119] hover:bg-[#FF9119] focus:ring-1 focus:outline-none focus:ring-[#FF9119] font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-[#FF9119] dark:hover:bg-[#FF9119] dark:focus:ring-[#FF9119]',
+	editButton:
+		'inline-block px-4 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out',
 };
 
 export default ShoppingCart;

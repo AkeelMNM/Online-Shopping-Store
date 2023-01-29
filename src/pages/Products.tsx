@@ -3,17 +3,19 @@ import { Checkbox, ProductCard, ProductModal } from '../components';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { Product } from '../types';
 import { fetchProducts, fetchProductsFilters } from '../redux/product';
+import { fetchUsersCartItems } from '../redux/cart';
 
 const Products = () => {
 	const dispatch = useAppDispatch();
 	const products: Product[] = useAppSelector(state => state.product.products);
 	const productFilter = useAppSelector(state => state.product.productFilter);
 	const [modalVisibility, setModalVisibility] = useState(false);
-	const [productID, setProductID] = useState('');
+	const [productId, setProductId] = useState('');
 
 	useEffect(() => {
 		dispatch(fetchProducts());
 		dispatch(fetchProductsFilters());
+		dispatch(fetchUsersCartItems('1'));
 	}, []);
 
 	const onSelectGender = (value: string): void => {};
@@ -27,7 +29,7 @@ const Products = () => {
 	const onPressFilter = (): void => {};
 
 	const onPressProductCard = (id: string): void => {
-		setProductID(id);
+		setProductId(id);
 		setModalVisibility(true);
 	};
 
@@ -140,7 +142,7 @@ const Products = () => {
 			</div>
 			<ProductModal
 				visible={modalVisibility}
-				productId={productID}
+				productId={productId}
 				onPressClose={() => setModalVisibility(false)}
 			/>
 		</div>

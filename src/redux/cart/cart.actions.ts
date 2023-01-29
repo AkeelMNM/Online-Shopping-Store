@@ -6,16 +6,22 @@ import {
 	ADD_TO_CART_REQUEST,
 	ADD_TO_CART_SUCCESS,
 	ADD_TO_CART_ERROR,
+	UPDATE_CART_ITEM_REQUEST,
+	UPDATE_CART_ITEM_SUCCESS,
+	UPDATE_CART_ITEM_ERROR,
+	DELETE_CART_ITEM_REQUEST,
+	DELETE_CART_ITEM_SUCCESS,
+	DELETE_CART_ITEM_ERROR,
 } from './cart.types';
 import * as cartService from '../../services/CartService';
 import { CartItem } from '../../types';
 
-export const fetchCartItems = () => {
+export const fetchUsersCartItems = (id: string) => {
 	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: FETCH_CART_REQUEST });
 
-			const data = await cartService.fetchCartItems();
+			const data = await cartService.fetchUsersCartItems(id);
 
 			dispatch({
 				type: FETCH_CART_SUCCESS,
@@ -28,7 +34,7 @@ export const fetchCartItems = () => {
 	};
 };
 
-export const AddItemToCart = (item: CartItem) => {
+export const addItemToCart = (item: CartItem) => {
 	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: ADD_TO_CART_REQUEST });
@@ -42,6 +48,42 @@ export const AddItemToCart = (item: CartItem) => {
 		} catch (error) {
 			console.log(error);
 			dispatch({ type: ADD_TO_CART_ERROR });
+		}
+	};
+};
+
+export const updateCartItem = (id: string, item: CartItem) => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: UPDATE_CART_ITEM_REQUEST });
+
+			//cartService.updateCartItem(id, item);
+
+			dispatch({
+				type: UPDATE_CART_ITEM_SUCCESS,
+				payload: { id, item },
+			});
+		} catch (error) {
+			console.log(error);
+			dispatch({ type: UPDATE_CART_ITEM_ERROR });
+		}
+	};
+};
+
+export const removeCartItem = (id: string) => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: DELETE_CART_ITEM_REQUEST });
+
+			cartService.removeCartItem(id);
+
+			dispatch({
+				type: DELETE_CART_ITEM_SUCCESS,
+				payload: id,
+			});
+		} catch (error) {
+			console.log(error);
+			dispatch({ type: DELETE_CART_ITEM_ERROR });
 		}
 	};
 };
