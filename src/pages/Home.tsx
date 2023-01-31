@@ -21,8 +21,8 @@ const Home = () => {
 	const onPressBestSeller = (): void => {};
 
 	return (
-		<div>
-			<div className="p-5">
+		<div className={homeStyles.mainContainer}>
+			<div className={homeStyles.carouselContainer}>
 				<Carousel
 					autoPlay
 					interval={5000}
@@ -57,10 +57,8 @@ const Home = () => {
 				/>
 			</div>
 			<div className={homeStyles.bestSellerContainer}>
-				<label className="p-5 font-serif text-2xl font-semibold">
-					Best Seller
-				</label>
-				<div className="flex flex-row p-10">
+				<label className={homeStyles.bestSellerText}>Best Seller</label>
+				<div className={homeStyles.productCardContainer}>
 					<ProductCard
 						name="Support Local"
 						image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
@@ -70,7 +68,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className={homeStyles.bottomContainer}>
-				<label className="p-5 font-serif text-2xl font-semibold">
+				<label className={homeStyles.partnerText}>
 					Trusted by our partners
 				</label>
 			</div>
@@ -79,9 +77,14 @@ const Home = () => {
 };
 
 const homeStyles = {
+	mainContainer: 'flex flex-col',
+	carouselContainer: 'p-5',
 	homeCardContainer: 'flex flex-row justify-between p-10',
 	bestSellerContainer: 'flex flex-col place-items-center',
 	bottomContainer: 'flex flex-col place-items-center',
+	bestSellerText: 'p-5 font-serif text-2xl font-semibold',
+	productCardContainer: 'flex flex-row p-10',
+	partnerText: 'p-5 font-serif text-2xl font-semibold',
 };
 
 export default Home;

@@ -6,7 +6,7 @@ export type Product = {
 	variants: Variant[];
 };
 
-type Variant = {
+export type Variant = {
 	id: string;
 	size: string;
 	color: string;
@@ -17,9 +17,23 @@ type Variant = {
 };
 
 export type CartItem = {
-	id: string;
-	color: string;
+	_id?: string;
+	userId: string;
+	productId: string;
+	variantId: string;
+	title: string;
 	size: string;
-	price: string;
+	color: string;
 	quantity: number;
+	price: number;
+	isFreeShipping: boolean;
+	image: string;
+};
+
+export type Invoice = {
+	fullName: string;
+	address: string;
+	city: string;
+	province: string;
+	mobileNo: string;
 };

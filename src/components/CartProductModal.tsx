@@ -3,50 +3,56 @@ import { CartItem, Product } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
-import { addItemToCart } from '../redux/cart';
+import { addItemToCart, removeCartItem, updateCartItem } from '../redux/cart';
 
-type ProductModalProps = {
+type CartProductModalProps = {
 	visible: Boolean;
 	productId: string;
+	cartItemId: string;
 	onPressClose: () => void;
 };
 
-const ProductModal = ({
+const CartProductModal = ({
 	visible,
 	productId,
+	cartItemId,
 	onPressClose,
-}: ProductModalProps) => {
+}: CartProductModalProps) => {
 	const product: Product = useAppSelector(state => {
 		return state.product.products.find((item: Product) => {
 			return item.id === productId;
 		});
 	});
 
+	const cartItem: CartItem = useAppSelector(state => {
+		return state.cart.cart.find((item: CartItem) => {
+			return item._id === cartItemId;
+		});
+	});
+
 	const dispatch = useAppDispatch();
-	const [selectedColor, setSelectedColor] = useState(
-		product && product.variants[1].color,
-	);
-	const [selectedSize, setSelectedSize] = useState(
-		product && product.variants[1].size,
-	);
-	const [selectedCount, setSelectedCount] = useState(1);
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedSize, setSelectedSize] = useState('');
+	const [selectedCount, setSelectedCount] = useState(0);
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
 
 	useEffect(() => {
-		// setSelectedColor(product && product.variants[1].color);
-		// setSelectedSize(product && product.variants[1].size);
-	}, []);
+		setSelectedColor(cartItem && cartItem.color);
+		setSelectedSize(cartItem && cartItem.size);
+		setSelectedCount(cartItem && cartItem.quantity);
+	}, [cartItem]);
 
-	const onPressAddToCart = () => {
+	const onPressUpdateItem = () => {
 		const variant = _.find(product.variants, {
 			color: selectedColor,
 			size: selectedSize,
 		});
 
 		if (variant) {
-			const cartItem: CartItem = {
+			const item: CartItem = {
+				_id: cartItem._id,
 				userId: '1', // TO DO: Get the logged in user's id
 				productId: product.id,
 				variantId: variant.id,
@@ -59,11 +65,16 @@ const ProductModal = ({
 				image: variant.image,
 			};
 
-			dispatch(addItemToCart(cartItem));
+			dispatch(updateCartItem(cartItemId, item));
 			onPressClose();
 		} else {
 			alert('Sorry this product not available');
 		}
+	};
+
+	const onPressDeleteItem = () => {
+		dispatch(removeCartItem(cartItemId));
+		onPressClose();
 	};
 
 	if (visible) {
@@ -84,7 +95,7 @@ const ProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={product.variants[0].image}
+							src={cartItem && cartItem.image}
 							crossOrigin="anonymous"
 						/>
 					</div>
@@ -100,6 +111,7 @@ const ProductModal = ({
 								productColors.map((item, index) => {
 									return (
 										<button
+											value={selectedColor}
 											key={index}
 											className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`}
 											onClick={() =>
@@ -108,14 +120,6 @@ const ProductModal = ({
 										/>
 									);
 								})}
-							{/* <button
-								className={
-									productModalStyles.productColor
-								}></button>
-							<button
-								className={`${productModalStyles.productColor} ml-1 bg-gray-700`}></button>
-							<button
-								className={`${productModalStyles.productColor} ml-1 bg-indigo-500`}></button> */}
 						</div>
 						<div className={productModalStyles.sizeContainer}>
 							<span className={productModalStyles.labelText}>
@@ -123,6 +127,7 @@ const ProductModal = ({
 							</span>
 							<div className={productModalStyles.selectDiv}>
 								<select
+									defaultValue={cartItem && cartItem.size}
 									onChange={e =>
 										setSelectedSize(e.target.value)
 									}
@@ -159,20 +164,25 @@ const ProductModal = ({
 							<QuantityPicker
 								smooth
 								max={5}
-								value={selectedCount}
+								value={cartItem && cartItem.quantity}
 								onChange={(value: number) =>
 									setSelectedCount(value)
 								}
 							/>
 						</div>
 						<span className={productModalStyles.priceText}>
-							{product.variants[0].price}
+							{`$${cartItem && cartItem.price}`}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
 							<button
 								className={productModalStyles.button}
-								onClick={onPressAddToCart}>
-								Add to Cart
+								onClick={onPressUpdateItem}>
+								Update the Cart
+							</button>
+							<button
+								className={productModalStyles.removeButton}
+								onClick={onPressDeleteItem}>
+								Remove this item
 							</button>
 						</div>
 					</div>
@@ -208,6 +218,8 @@ const productModalStyles = {
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
 	closeContainer: 'absolute top-0 right-0 cursor-pointer',
+	removeButton:
+		'inline-block w-full px-6 py-2.5 bg-red-600 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out',
 };
 
-export { ProductModal };
+export { CartProductModal };
