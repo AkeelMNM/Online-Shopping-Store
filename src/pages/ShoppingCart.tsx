@@ -249,10 +249,10 @@ const ShoppingCart = () => {
 };
 
 const cartStyles = {
-	mainContainer: 'flex p-1',
-	productContainer: 'w-1/2 flex-col bg-white px-8 pb-2 ml-1 mb-4 pt-4',
+	mainContainer: 'flex p-1 mb-[0.3rem]',
+	productContainer: 'w-1/2 flex-col bg-white px-8 pb-2 ml-1 mt-6 pt-4',
 	formContainer:
-		'w-1/2 flex-col bg-white px-8 pb-2 ml-1 mb-4 pt-4 shadow-md rounded',
+		'w-1/2 flex-col bg-white px-8 pb-2 ml-1 mb-5 pt-4 shadow-md rounded',
 	itemCountContainer:
 		'flex flex-row justify-between shadow-md rounded p-2 mb-4',
 	itemCountText: 'mt-4 pt-2 font-semibold',
@@ -265,7 +265,7 @@ const cartStyles = {
 	billText: 'text-2xl font-bold',
 	form: 'mt-4',
 	submitButton:
-		'text-white bg-[#FF9119] hover:bg-[#FF9119] focus:ring-1 focus:outline-none focus:ring-[#FF9119] font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-[#FF9119] dark:hover:bg-[#FF9119] dark:focus:ring-[#FF9119]',
+		'text-white bg-[#FF9119] hover:bg-[#FF9119] focus:ring-1 focus:outline-none focus:ring-[#FF9119] font-medium rounded-lg text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-[#FF9119] dark:hover:bg-[#FF9119] dark:focus:ring-[#FF9119]',
 	editButton:
 		'inline-block px-4 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out',
 };

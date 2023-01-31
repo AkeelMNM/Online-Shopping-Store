@@ -57,7 +57,7 @@ export const updateCartItem = (id: string, item: CartItem) => {
 		try {
 			dispatch({ type: UPDATE_CART_ITEM_REQUEST });
 
-			//cartService.updateCartItem(id, item);
+			cartService.updateCartItem(id, item);
 
 			dispatch({
 				type: UPDATE_CART_ITEM_SUCCESS,

@@ -6,7 +6,7 @@ const Header = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className={headerStyles.mainContainer}>
+		<header className={headerStyles.mainContainer}>
 			<label
 				onClick={() => navigate('/')}
 				className={headerStyles.headText}>
@@ -29,7 +29,7 @@ const Header = () => {
 					navigate('/cart');
 				}}
 			/>
-		</div>
+		</header>
 	);
 };
 
