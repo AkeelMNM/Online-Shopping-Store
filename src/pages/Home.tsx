@@ -15,10 +15,10 @@ const Home = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchProducts());
+		//fetch best selling product from backend
 	}, []);
 
-	const onPressBestSeller = (): void => {};
+	const onPressBestSeller = (): void => { };
 
 	return (
 		<div className={homeStyles.mainContainer}>

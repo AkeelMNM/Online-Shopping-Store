@@ -3,7 +3,6 @@ import { Checkbox, ProductCard, ProductModal } from '../components';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { Product } from '../types';
 import { fetchProducts, fetchProductsFilters } from '../redux/product';
-import { fetchUsersCartItems } from '../redux/cart';
 
 const Products = () => {
 	const dispatch = useAppDispatch();
@@ -15,7 +14,6 @@ const Products = () => {
 	useEffect(() => {
 		dispatch(fetchProducts());
 		dispatch(fetchProductsFilters());
-		dispatch(fetchUsersCartItems('1'));
 	}, []);
 
 	const onSelectGender = (value: string): void => {};

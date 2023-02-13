@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
 import { CartProductModal, Input } from '../components';
+import { fetchUsersCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
 import { CartItem, Invoice } from '../types';
@@ -71,6 +72,10 @@ const ShoppingCart = () => {
 	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productId, setProductId] = useState('');
 	const [cartItemId, setCartItemId] = useState('');
+
+	useEffect(() => {
+		dispatch(fetchUsersCartItems('1'));
+	}, []);
 
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		e.preventDefault();

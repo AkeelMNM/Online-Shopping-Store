@@ -95,13 +95,13 @@ const CartProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={cartItem && cartItem.image}
+							src={_.get(cartItem, 'image', '')}
 							crossOrigin="anonymous"
 						/>
 					</div>
 					<div className={productModalStyles.optionContainer}>
 						<h1 className={productModalStyles.name}>
-							{product.title}
+							{_.get(product, 'title', '')}
 						</h1>
 						<div className={productModalStyles.colorContainer}>
 							<span className={productModalStyles.labelText}>
@@ -127,7 +127,7 @@ const CartProductModal = ({
 							</span>
 							<div className={productModalStyles.selectDiv}>
 								<select
-									defaultValue={cartItem && cartItem.size}
+									defaultValue={_.get(cartItem, 'size', '')}
 									onChange={e =>
 										setSelectedSize(e.target.value)
 									}
@@ -164,14 +164,14 @@ const CartProductModal = ({
 							<QuantityPicker
 								smooth
 								max={5}
-								value={cartItem && cartItem.quantity}
+								value={_.get(cartItem, 'quantity', 0)}
 								onChange={(value: number) =>
 									setSelectedCount(value)
 								}
 							/>
 						</div>
 						<span className={productModalStyles.priceText}>
-							{`$${cartItem && cartItem.price}`}
+							{`$${_.get(cartItem, 'price', 0)}`}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
 							<button
