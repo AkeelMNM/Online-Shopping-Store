@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
 import { CartProductModal, Input } from '../components';
 import { fetchUsersCartItems } from '../redux/cart';
@@ -72,10 +73,17 @@ const ShoppingCart = () => {
 	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productId, setProductId] = useState('');
 	const [cartItemId, setCartItemId] = useState('');
+	const [totalCost, setTotalCost] = useState(0);
 
 	useEffect(() => {
 		dispatch(fetchUsersCartItems('1'));
 	}, []);
+
+	useEffect(() => {
+		let cost: number = 0;
+		cart.map(item => (cost = +item.price * item.quantity));
+		setTotalCost(cost);
+	}, [cart]);
 
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		e.preventDefault();
@@ -169,17 +177,17 @@ const ShoppingCart = () => {
 						return (
 							<Cart
 								key={index}
-								color={item.color}
-								image={item.image}
+								color={_.get(item, 'color', '')}
+								image={_.get(item, 'image', '')}
 								//isFreeShipping={item.isFreeShipping}
-								quantity={item.quantity}
-								size={item.size}
-								title={item.title}
-								price={item.price}
+								quantity={_.get(item, 'quantity', 0)}
+								size={_.get(item, 'size', '')}
+								title={_.get(item, 'title', '')}
+								price={_.get(item, 'price', 0)}
 								onPressEdit={() =>
 									onPressUpdateCart(
 										item.productId,
-										item._id || '',
+										_.get(item, '_id', ''),
 									)
 								}
 							/>
@@ -187,7 +195,10 @@ const ShoppingCart = () => {
 					})}
 				<div className={cartStyles.itemCountContainer}>
 					<label className={cartStyles.itemCountText}>Total</label>
-					<label className={cartStyles.itemCountText}>$40</label>
+					<label
+						className={
+							cartStyles.itemCountText
+						}>{`$${totalCost}`}</label>
 				</div>
 			</div>
 			<div className={cartStyles.formContainer}>
