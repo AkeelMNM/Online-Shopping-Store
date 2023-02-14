@@ -1,24 +1,31 @@
 import React, { useEffect } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import _ from 'lodash';
 import { HomeCard, ProductCard } from '../components';
-import { fetchProducts } from '../redux/product';
+import { fetchContents } from '../redux/general';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
-
-const carouselImage = [
-	'https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80',
-	'https://images.unsplash.com/photo-1655745653127-4d6837baf958?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-	'https://images.unsplash.com/photo-1516527653392-602455dd9cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80',
-];
+import { ContentType, Product } from '../types';
+import { fetchBestSellerProducts } from '../redux/product';
 
 const Home = () => {
 	const dispatch = useAppDispatch();
+	const carousel: ContentType[] = useAppSelector(
+		state => state.general.carousel,
+	);
+	const quality: ContentType[] = useAppSelector(
+		state => state.general.quality,
+	);
+	const bestSeller: Product[] = useAppSelector(
+		state => state.product.bestSeller,
+	);
 
 	useEffect(() => {
-		//fetch best selling product from backend
+		dispatch(fetchContents());
+		dispatch(fetchBestSellerProducts());
 	}, []);
 
-	const onPressBestSeller = (): void => { };
+	const onPressBestSeller = (): void => {};
 
 	return (
 		<div className={homeStyles.mainContainer}>
@@ -30,41 +37,51 @@ const Home = () => {
 					infiniteLoop
 					showThumbs={false}
 					dynamicHeight={false}>
-					{carouselImage?.map((item, index) => {
-						return (
-							<div key={index}>
-								<img src={item} alt="Carousel Image" />
-							</div>
-						);
-					})}
+					{carousel &&
+						carousel.map((item, index) => {
+							return (
+								<div key={index}>
+									<img
+										src={item.image}
+										alt="Carousel Image"
+									/>
+								</div>
+							);
+						})}
 				</Carousel>
 			</div>
 			<div className={homeStyles.homeCardContainer}>
 				<HomeCard
 					title="Support Local"
 					description="All the materials are come from local producers. Together we can create a strong and better community."
-					image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
+					image={_.get(quality, '[0].image', '')}
 				/>
 				<HomeCard
 					title="High quality"
 					description="Martials are high quality proves to last many years."
-					image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
+					image={_.get(quality, '[1].image', '')}
 				/>
 				<HomeCard
 					title="Eco friendly"
 					description="Rest assures product and materiels used will never harm our environment."
-					image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
+					image={_.get(quality, '[2].image', '')}
 				/>
 			</div>
 			<div className={homeStyles.bestSellerContainer}>
 				<label className={homeStyles.bestSellerText}>Best Seller</label>
 				<div className={homeStyles.productCardContainer}>
-					<ProductCard
-						name="Support Local"
-						image="https://images.unsplash.com/photo-1656268164012-119304af0c69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1112&q=80"
-						onPress={onPressBestSeller}
-						price={'$35'}
-					/>
+					{bestSeller &&
+						bestSeller.map((item, index) => {
+							return (
+								<ProductCard
+									key={index}
+									name={_.get(item, 'title', '')}
+									image={_.get(item, 'variants[0].image', '')}
+									onPress={onPressBestSeller}
+									price={_.get(item, 'variants[0].price', '')}
+								/>
+							);
+						})}
 				</div>
 			</div>
 			<div className={homeStyles.bottomContainer}>
@@ -83,7 +100,7 @@ const homeStyles = {
 	bestSellerContainer: 'flex flex-col place-items-center',
 	bottomContainer: 'flex flex-col place-items-center',
 	bestSellerText: 'p-5 font-serif text-2xl font-semibold',
-	productCardContainer: 'flex flex-row p-10',
+	productCardContainer: 'grid grid-cols-2 gap-4 p-10',
 	partnerText: 'p-5 font-serif text-2xl font-semibold',
 };
 

@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, ProductCard, ProductModal } from '../components';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
+import _ from 'lodash';
 import { Product } from '../types';
-import { fetchProducts, fetchProductsFilters } from '../redux/product';
+import {
+	fetchFilteredProducts,
+	fetchProducts,
+	fetchProductsFilters,
+} from '../redux/product';
 
 const Products = () => {
 	const dispatch = useAppDispatch();
@@ -10,21 +15,36 @@ const Products = () => {
 	const productFilter = useAppSelector(state => state.product.productFilter);
 	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productId, setProductId] = useState('');
+	const [filter, setFilter] = useState<string[]>([]);
 
 	useEffect(() => {
 		dispatch(fetchProducts());
 		dispatch(fetchProductsFilters());
 	}, []);
 
-	const onSelectGender = (value: string): void => {};
+	const onSelectFilter = (value: string): void => {
+		let clone = filter;
+		const isValueExist = clone.includes(value);
 
-	const onSelectCategory = (value: string): void => {
-		//TO DO: this function need to store the selected value in array not single value
+		if (isValueExist) {
+			clone = clone.filter(item => item !== value);
+		} else {
+			clone.push(value);
+		}
+
+		setFilter(clone);
+
+		if (clone.length <= 0) {
+			dispatch(fetchProducts());
+		} else {
+			onPressFilter();
+		}
 	};
 
-	const onSelectTrends = (value: string): void => {};
-
-	const onPressFilter = (): void => {};
+	const onPressFilter = (): void => {
+		const searchValue = filter.join(';');
+		dispatch(fetchFilteredProducts(searchValue));
+	};
 
 	const onPressProductCard = (id: string): void => {
 		setProductId(id);
@@ -35,11 +55,6 @@ const Products = () => {
 		<div className={productStyles.mainContainer}>
 			<div className={productStyles.gridContainer}>
 				<div className={productStyles.filterContainer}>
-					<button
-						onClick={onPressFilter}
-						className={productStyles.filterButton}>
-						Filter Products
-					</button>
 					<h3 className={productStyles.filterTitle}>Gender</h3>
 					<ul className={productStyles.filterOrderList}>
 						{productFilter.gender &&
@@ -54,7 +69,7 @@ const Products = () => {
 											<Checkbox
 												value={value}
 												onSelect={() =>
-													onSelectGender(value)
+													onSelectFilter(value)
 												}
 											/>
 										</li>
@@ -76,7 +91,7 @@ const Products = () => {
 											<Checkbox
 												value={value}
 												onSelect={() =>
-													onSelectCategory(value)
+													onSelectFilter(value)
 												}
 											/>
 										</li>
@@ -98,7 +113,7 @@ const Products = () => {
 											<Checkbox
 												value={value}
 												onSelect={() =>
-													onSelectTrends(value)
+													onSelectFilter(value)
 												}
 											/>
 										</li>
@@ -110,31 +125,27 @@ const Products = () => {
 				<div className={productStyles.productContainer}>
 					<div className={productStyles.productGrid}>
 						{products &&
-							products.map((product: Product) => {
+							products.map((product, index) => {
 								return (
 									<ProductCard
-										key={product.id}
-										name={product.title}
-										image={product.variants[0].image}
+										key={index}
+										name={_.get(product, 'title', '')}
+										image={_.get(
+											product,
+											'variants[0].image',
+											'',
+										)}
 										onPress={() =>
 											onPressProductCard(product.id)
 										}
-										price={product.variants[0].price}
+										price={_.get(
+											product,
+											'variants[0].price',
+											'',
+										)}
 									/>
 								);
 							})}
-						{/* <ProductCard
-							name="Casual Slim Fit Shirt"
-							image={Shirt}
-							onPress={onPressProduct}
-							price={35}
-						/>
-						<ProductCard
-							name="Casual Slim Fit Shirt"
-							image={Shirt}
-							onPress={onPressProduct}
-							price={35}
-						/> */}
 					</div>
 				</div>
 			</div>
@@ -151,10 +162,8 @@ const productStyles = {
 	mainContainer: 'h-full',
 	gridContainer: 'grid grid-cols-5 pt-5',
 	filterContainer:
-		'col-span-1 px-2 bg-white shadow-md rounded px-8 pb-2 ml-1 mb-4 pt-4',
-	filterButton:
-		'text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-sm text-sm px-2 py-1 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40',
-	filterTitle: 'mb-4 pt-2 font-semibold',
+		'col-span-1 px-2 bg-white shadow-md rounded px-8 pb-2 ml-1 mb-4 pt-2',
+	filterTitle: 'mb-4 pt-1 font-semibold',
 	filterOrderList: 'w-28 text-sm font-medium bg-white dark:text-white',
 	filterList: 'w-full rounded-t-lg border-gray-200 dark:border-gray-600',
 	productContainer: 'col-span-4 px-2 overflow-auto h-screen',
