@@ -37,3 +37,13 @@ export type Invoice = {
 	province: string;
 	mobileNo: string;
 };
+
+export type Content = {
+	carouselContent: ContentType[];
+	qualityContent: ContentType[];
+};
+
+export type ContentType = {
+	type: string;
+	image: string;
+};
