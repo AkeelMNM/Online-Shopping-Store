@@ -214,7 +214,7 @@ const productModalStyles = {
 	pickerContainer: 'flex flex items-center pt-5 pb-5',
 	priceText: 'title-font font-medium text-2xl text-gray-900',
 	buttonContainer: 'w-full p-3',
-	button: 'inline-block w-full px-6 py-2.5 mb-2 bg-indigo-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-indigo-600 hover:shadow-lg focus:bg-indigo-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-700 active:shadow-lg transition duration-150 ease-in-out',
+	button: 'inline-block w-full px-6 py-2.5 mb-2 bg-blue-600 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-700 active:shadow-lg transition duration-150 ease-in-out',
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
 	closeContainer: 'absolute top-0 right-0 cursor-pointer',

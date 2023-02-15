@@ -91,7 +91,7 @@ const ShoppingCart = () => {
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const onPressUpdateCart = (productId: string, cartItemId: string) => {
+	const onPressUpdateCart = (productId: string, cartItemId: string): void => {
 		setProductId(productId);
 		setCartItemId(cartItemId);
 		setModalVisibility(true);
@@ -281,7 +281,7 @@ const cartStyles = {
 	billText: 'text-2xl font-bold',
 	form: 'mt-4',
 	submitButton:
-		'text-white bg-[#FF9119] hover:bg-[#FF9119] focus:ring-1 focus:outline-none focus:ring-[#FF9119] font-medium rounded-lg text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-[#FF9119] dark:hover:bg-[#FF9119] dark:focus:ring-[#FF9119]',
+		'text-white bg-blue-600 hover:bg-blue-600 focus:ring-1 focus:outline-none focus:ring-blue-600 font-medium rounded-sm text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-600',
 	editButton:
 		'inline-block px-4 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out',
 };
