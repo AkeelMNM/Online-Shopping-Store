@@ -3,7 +3,7 @@ import { useAppDispatch } from '../redux/hook';
 import { useNavigate } from 'react-router-dom';
 import { addUser } from '../redux/user';
 import { User } from '../types';
-//import { hashUserPassword } from '../utils/hashFunction';
+import { hashUserPassword } from '../utils/hashFunction';
 
 const Register = () => {
 	const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ const Register = () => {
 		} else if (!password && password === '') {
 			setPasswordErr('Enter Password');
 		} else {
-			const hashedPassword: string = '';//await hashUserPassword(password);
+			const hashedPassword: string = await hashUserPassword(password);
 
 			const user: User = {
 				fullName: fullName,

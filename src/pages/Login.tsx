@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../redux/user';
 import { loginUser } from '../services/UserService';
 import { Login } from '../types';
-//import { hashUserPassword } from '../utils/hashFunction';
+import { hashUserPassword } from '../utils/hashFunction';
 
 const Login = () => {
 	const dispatch = useAppDispatch();
@@ -22,16 +22,15 @@ const Login = () => {
 		} else if (!password && password === '') {
 			setPasswordErr('Enter Password');
 		} else {
-			const hashedPassword: string = '';//await hashUserPassword(password);
-			console.log(hashedPassword);
+			const hashedPassword: string = await hashUserPassword(password);
 
-			// const login: Login = await loginUser(email, hashedPassword);
-			// if (login.isVerified) {
-			// 	dispatch(fetchUser(login._id));
-			// 	navigate('/home');
-			// } else {
-			// 	setLoginErr('Email or password is incorrect!!');
-			// }
+			const login: Login = await loginUser(email, hashedPassword);
+			if (login.isVerified) {
+				dispatch(fetchUser(login._id));
+				navigate('/home');
+			} else {
+				setLoginErr('Email or password is incorrect!!');
+			}
 		}
 	};
 
