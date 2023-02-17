@@ -47,3 +47,17 @@ export type ContentType = {
 	type: string;
 	image: string;
 };
+
+export type User = {
+	_id?: string;
+	fullName: string;
+	email: string;
+	password: string;
+	isActive: boolean;
+};
+
+export type Login = {
+	_id: string;
+	isActive: boolean;
+	isVerified: boolean;
+};

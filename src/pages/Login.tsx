@@ -1,19 +1,37 @@
 import React, { useState } from 'react';
 import LoginImage from '../assets/images/Login.png';
+import { useAppDispatch } from '../redux/hook';
+import { useNavigate } from 'react-router-dom';
+import { fetchUser } from '../redux/user';
+import { loginUser } from '../services/UserService';
+import { Login } from '../types';
+//import { hashUserPassword } from '../utils/hashFunction';
 
 const Login = () => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [emailErr, setEmailErr] = useState('');
 	const [passwordErr, setPasswordErr] = useState('');
+	const [loginErr, setLoginErr] = useState('');
 
-	const onPressLogin = (): void => {
+	const onPressLogin = async (): Promise<void> => {
 		if (!email && email === '') {
 			setEmailErr('Enter email');
 		} else if (!password && password === '') {
 			setPasswordErr('Enter Password');
 		} else {
-			//Login Logic
+			const hashedPassword: string = '';//await hashUserPassword(password);
+			console.log(hashedPassword);
+
+			// const login: Login = await loginUser(email, hashedPassword);
+			// if (login.isVerified) {
+			// 	dispatch(fetchUser(login._id));
+			// 	navigate('/home');
+			// } else {
+			// 	setLoginErr('Email or password is incorrect!!');
+			// }
 		}
 	};
 
@@ -91,6 +109,11 @@ const Login = () => {
 								</a>
 							</div>
 							<div className={loginStyles.buttonContainer}>
+								{loginErr && (
+									<span className={loginStyles.loginError}>
+										{loginErr}
+									</span>
+								)}
 								<button
 									type="button"
 									onClick={onPressLogin}
@@ -208,6 +231,8 @@ const loginStyles = {
 	signInOptionImage: 'w-4 h-4',
 	errorText:
 		'block mb-2 text-xs font-medium text-red-700 dark:text-red-500 mt-1 italic',
+	loginError:
+		'block mb-4 text-lg font-medium text-red-700 dark:text-red-500 italic',
 };
 
 export default Login;

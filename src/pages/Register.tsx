@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import { useAppDispatch } from '../redux/hook';
+import { useNavigate } from 'react-router-dom';
+import { addUser } from '../redux/user';
+import { User } from '../types';
+//import { hashUserPassword } from '../utils/hashFunction';
 
 const Register = () => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [fullName, setFullName] = useState('');
@@ -17,16 +24,24 @@ const Register = () => {
 		}
 	};
 
-	const onPressCreateAccount = (): void => {
+	const onPressCreateAccount = async (): Promise<void> => {
 		if (!fullName && fullName === '') {
 			setFullNameErr('Enter FullName');
-		}
-		else if (!email && email === '') {
+		} else if (!email && email === '') {
 			setEmailErr('Enter email');
 		} else if (!password && password === '') {
 			setPasswordErr('Enter Password');
 		} else {
-			//Register Logic
+			const hashedPassword: string = '';//await hashUserPassword(password);
+
+			const user: User = {
+				fullName: fullName,
+				email: email,
+				isActive: true,
+				password: hashedPassword
+			};
+			dispatch(addUser(user));
+			navigate('/');
 		}
 	};
 
@@ -64,7 +79,9 @@ const Register = () => {
 						className={registerStyles.input}
 						value={password}
 						placeholder="Password"
-						onChange={event => setPassword(event.target.value.trim())}
+						onChange={event =>
+							setPassword(event.target.value.trim())
+						}
 					/>
 					{passwordErr && (
 						<span className={registerStyles.errorText}>

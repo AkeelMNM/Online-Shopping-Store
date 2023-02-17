@@ -1,0 +1,12 @@
+export const FETCH_USER_REQUEST: string = 'user/fetch_user_request';
+export const FETCH_USER_SUCCESS: string = 'user/fetch_user_success';
+export const FETCH_USER_ERROR: string = 'user/fetch_user_error';
+export const ADD_TO_USER_REQUEST: string = 'user/add_to_user_request';
+export const ADD_TO_USER_SUCCESS: string = 'user/add_to_user_success';
+export const ADD_TO_USER_ERROR: string = 'user/add_to_user_error';
+export const UPDATE_USER_REQUEST: string = 'user/update_user_request';
+export const UPDATE_USER_SUCCESS: string = 'user/update_user_success';
+export const UPDATE_USER_ERROR: string = 'user/update_user_error';
+export const DELETE_USER_REQUEST: string = 'user/delete_user_request';
+export const DELETE_USER_SUCCESS: string = 'user/delete_user_success';
+export const DELETE_USER_ERROR: string = 'user/delete_user_error';
