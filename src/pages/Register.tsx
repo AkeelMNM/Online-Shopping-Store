@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../redux/hook';
 import { useNavigate } from 'react-router-dom';
+import validator from 'validator';
 import { addUser } from '../redux/user';
 import { User } from '../types';
 import { hashUserPassword } from '../utils/hashFunction';
@@ -24,6 +25,36 @@ const Register = () => {
 		}
 	};
 
+	const onChangeEmailValidation = (value: string) => {
+		if (validator.isEmail(value)) {
+			setEmailErr('');
+		} else {
+			setEmailErr('Enter a valid email.');
+		}
+
+		setEmail(value);
+	};
+
+	const onChangePasswordValidation = (value: string) => {
+		const isPasswordStrong = validator.isStrongPassword(value, {
+			minLength: 8,
+			minLowercase: 1,
+			minUppercase: 1,
+			minNumbers: 1,
+			minSymbols: 1,
+		});
+
+		if (isPasswordStrong) {
+			setPasswordErr('');
+		} else {
+			setPasswordErr(
+				'Password must have minimum 8 characters with at least one uppercase, lowercase and special character.',
+			);
+		}
+
+		setPassword(value);
+	};
+
 	const onPressCreateAccount = async (): Promise<void> => {
 		if (!fullName && fullName === '') {
 			setFullNameErr('Enter FullName');
@@ -38,7 +69,7 @@ const Register = () => {
 				fullName: fullName,
 				email: email,
 				isActive: true,
-				password: hashedPassword
+				password: hashedPassword,
 			};
 			dispatch(addUser(user));
 			navigate('/');
@@ -67,7 +98,9 @@ const Register = () => {
 						className={registerStyles.input}
 						value={email}
 						placeholder="Email"
-						onChange={event => setEmail(event.target.value.trim())}
+						onChange={event =>
+							onChangeEmailValidation(event.target.value.trim())
+						}
 					/>
 					{emailErr && (
 						<span className={registerStyles.errorText}>
@@ -80,7 +113,9 @@ const Register = () => {
 						value={password}
 						placeholder="Password"
 						onChange={event =>
-							setPassword(event.target.value.trim())
+							onChangePasswordValidation(
+								event.target.value.trim(),
+							)
 						}
 					/>
 					{passwordErr && (

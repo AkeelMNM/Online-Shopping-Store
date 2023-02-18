@@ -1,6 +1,6 @@
 import { User, Login } from '../types';
 
-const API_NAME: string = process.env.API_ADDRESS || '';
+const API_NAME: string = process.env.USER_API_ADDRESS || '';
 
 export const loginUser = async (
 	email: string,
@@ -27,7 +27,7 @@ export const loginUser = async (
 
 export const fetchUser = async (userId: string): Promise<User> => {
 	try {
-		const response = await fetch(`${API_NAME}/user/${userId}`, {
+		const response = await fetch(`${API_NAME}/user?=${userId}`, {
 			method: 'GET',
 		});
 
@@ -52,6 +52,8 @@ export const storeUser = async (user: User): Promise<User> => {
 			body: JSON.stringify(user),
 		});
 
+		console.log(response);
+
 		const responseData = await response.json();
 
 		return responseData || {};
@@ -63,7 +65,7 @@ export const storeUser = async (user: User): Promise<User> => {
 
 export const updateUser = async (id: string, user: User): Promise<User> => {
 	try {
-		const response = await fetch(`${API_NAME}/user/${id}`, {
+		const response = await fetch(`${API_NAME}/user?=${id}`, {
 			method: 'PUT',
 			headers: {
 				Accept: 'application/json',
@@ -83,7 +85,7 @@ export const updateUser = async (id: string, user: User): Promise<User> => {
 
 export const removeUser = async (id: string): Promise<void> => {
 	try {
-		const response = await fetch(`${API_NAME}/user/${id}`, {
+		const response = await fetch(`${API_NAME}/user?=${id}`, {
 			method: 'DELETE',
 			headers: {
 				Accept: 'application/json',

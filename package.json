@@ -26,12 +26,14 @@
 		"react-router-dom": "^6.4.2",
 		"redux": "^4.2.0",
 		"redux-persist": "^6.0.0",
-		"typescript": "*"
+		"typescript": "*",
+		"validator": "^13.9.0"
 	},
 	"devDependencies": {
 		"@parcel/transformer-image": "2.0.0-rc.0",
 		"@types/crypto-js": "^4.1.1",
 		"@types/node": "^18.11.18",
+		"@types/validator": "^13.7.12",
 		"@typescript-eslint/eslint-plugin": "^5.46.0",
 		"@typescript-eslint/parser": "^5.46.0",
 		"autoprefixer": "^10.4.13",

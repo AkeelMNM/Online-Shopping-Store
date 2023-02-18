@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LoginImage from '../assets/images/Login.png';
 import { useAppDispatch } from '../redux/hook';
 import { useNavigate } from 'react-router-dom';
+import validator from 'validator';
 import { fetchUser } from '../redux/user';
 import { loginUser } from '../services/UserService';
 import { Login } from '../types';
@@ -34,6 +35,16 @@ const Login = () => {
 		}
 	};
 
+	const onChangeEmailValidation = (value: string) => {
+		if (validator.isEmail(value)) {
+			setEmailErr('');
+		} else {
+			setEmailErr('Enter a valid email.');
+		}
+
+		setEmail(value);
+	};
+
 	return (
 		<section className={loginStyles.mainContainer}>
 			<div className={loginStyles.container}>
@@ -58,7 +69,9 @@ const Login = () => {
 									placeholder="Email address"
 									value={email}
 									onChange={event =>
-										setEmail(event.target.value)
+										onChangeEmailValidation(
+											event.target.value,
+										)
 									}
 								/>
 								{emailErr && (
