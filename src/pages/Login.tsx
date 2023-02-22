@@ -26,6 +26,7 @@ const Login = () => {
 			const hashedPassword: string = await hashUserPassword(password);
 
 			const login: Login = await loginUser(email, hashedPassword);
+
 			if (login.isVerified) {
 				dispatch(fetchUser(login._id));
 				navigate('/home');

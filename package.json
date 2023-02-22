@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "parcel index.html --port 3000",
+		"start": "parcel index.html --https --cert ./CA/localhost.pem --key ./CA/localhost-key.pem --port 3000",
 		"build": "parcel index.tsx",
 		"format": "prettier --write \"**/*.+(js|jsx|json|md|tsx|ts)\""
 	},

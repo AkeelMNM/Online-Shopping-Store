@@ -27,7 +27,7 @@ export const loginUser = async (
 
 export const fetchUser = async (userId: string): Promise<User> => {
 	try {
-		const response = await fetch(`${API_NAME}/user?=${userId}`, {
+		const response = await fetch(`${API_NAME}/user?id=${userId}`, {
 			method: 'GET',
 		});
 
@@ -65,7 +65,7 @@ export const storeUser = async (user: User): Promise<User> => {
 
 export const updateUser = async (id: string, user: User): Promise<User> => {
 	try {
-		const response = await fetch(`${API_NAME}/user?=${id}`, {
+		const response = await fetch(`${API_NAME}/user?id=${id}`, {
 			method: 'PUT',
 			headers: {
 				Accept: 'application/json',
@@ -85,7 +85,7 @@ export const updateUser = async (id: string, user: User): Promise<User> => {
 
 export const removeUser = async (id: string): Promise<void> => {
 	try {
-		const response = await fetch(`${API_NAME}/user?=${id}`, {
+		const response = await fetch(`${API_NAME}/user?id=${id}`, {
 			method: 'DELETE',
 			headers: {
 				Accept: 'application/json',
