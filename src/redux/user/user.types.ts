@@ -1,3 +1,4 @@
+export const CLEAR_REDUX_STORE = 'general/clear_redux_store';
 export const FETCH_USER_REQUEST: string = 'user/fetch_user_request';
 export const FETCH_USER_SUCCESS: string = 'user/fetch_user_success';
 export const FETCH_USER_ERROR: string = 'user/fetch_user_error';

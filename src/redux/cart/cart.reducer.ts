@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import {
+	CLEAR_REDUX_STORE,
 	FETCH_CART_ERROR,
 	FETCH_CART_REQUEST,
 	FETCH_CART_SUCCESS,
@@ -25,6 +26,8 @@ const initialState = {
 
 export const cartReducer = (state = initialState, action: AnyAction) => {
 	switch (action.type) {
+		case CLEAR_REDUX_STORE:
+			return (state = initialState);
 		case FETCH_CART_REQUEST:
 			return {
 				...state,

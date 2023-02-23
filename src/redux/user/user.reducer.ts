@@ -12,6 +12,7 @@ import {
 	UPDATE_USER_REQUEST,
 	UPDATE_USER_SUCCESS,
 	UPDATE_USER_ERROR,
+	CLEAR_REDUX_STORE,
 } from './user.types';
 import { User } from '../../types';
 
@@ -25,10 +26,13 @@ const initialState = {
 	isUserAdding: false,
 	isUpdatingUser: false,
 	isRemovingUser: false,
+	isUserLoggedIn: false,
 };
 
 export const userReducer = (state = initialState, action: AnyAction) => {
 	switch (action.type) {
+		case CLEAR_REDUX_STORE:
+			return (state = initialState);
 		case FETCH_USER_REQUEST:
 			return {
 				...state,
@@ -38,6 +42,7 @@ export const userReducer = (state = initialState, action: AnyAction) => {
 			return {
 				...state,
 				user: action.payload,
+				isUserLoggedIn: true,
 				isUserFetching: false,
 			};
 		case FETCH_USER_ERROR:

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CartItem, Product } from '../types';
+import { CartItem, Product, User } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
@@ -30,6 +30,8 @@ const CartProductModal = ({
 		});
 	});
 
+	const user: User = useAppSelector(state => state.user.user);
+
 	const dispatch = useAppDispatch();
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState('');
@@ -53,7 +55,7 @@ const CartProductModal = ({
 		if (variant) {
 			const item: CartItem = {
 				_id: cartItem._id,
-				userId: '1', // TO DO: Get the logged in user's id
+				userId: _.get(user, '_id', ''), // TO DO: Get the logged in user's id
 				productId: product.id,
 				variantId: variant.id,
 				quantity: selectedCount,

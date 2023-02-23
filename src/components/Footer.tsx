@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
 	const path = window.location.pathname;
 
-	if (path === '/' || path === '/register') {
+	if (path === '/login' || path === '/register') {
 		return <></>;
 	} else {
 		return (

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
+import { useNavigate } from 'react-router-dom';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
 import { CartProductModal, Input } from '../components';
 import { fetchUsersCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
-import { CartItem, Invoice } from '../types';
+import { CartItem, Invoice, User } from '../types';
 
 type CartProps = {
 	title: string;
@@ -67,6 +68,11 @@ const Cart = ({
 
 const ShoppingCart = () => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const user: User = useAppSelector(state => state.user.user);
+	const isUserLoggedIn: User = useAppSelector(
+		state => state.user.isUserLoggedIn,
+	);
 	const cart: CartItem[] = useAppSelector(state => state.cart.cart);
 	const [formData, setFormData] = useState<Invoice>(INITIAL_STATE);
 	const [fromError, setFormError] = useState(ERROR_INITIAL_STATE);
@@ -76,7 +82,11 @@ const ShoppingCart = () => {
 	const [totalCost, setTotalCost] = useState(0);
 
 	useEffect(() => {
-		dispatch(fetchUsersCartItems('1'));
+		if (isUserLoggedIn) {
+			dispatch(fetchUsersCartItems(_.get(user, '_id', '')));
+		} else {
+			console.log('no user login');
+		}
 	}, []);
 
 	useEffect(() => {
@@ -163,105 +173,138 @@ const ShoppingCart = () => {
 		}
 	};
 
-	return (
-		<div className={cartStyles.mainContainer}>
-			<div className={cartStyles.productContainer}>
-				<div className={cartStyles.itemCountContainer}>
-					<label className={cartStyles.itemCountText}>
-						Item: {cart.length}
+	if (!isUserLoggedIn) {
+		return (
+			<div className={cartStyles.container}>
+				<div className={cartStyles.textContainer}>
+					<label className={cartStyles.cartNotItemText}>
+						You don't have any items in your cart.
 					</label>
-					<img src={FreeDelivery} className={cartStyles.freeimage} />
+					<br></br>
+					<label className={cartStyles.cartLoginText}>
+						Have an account? Sign in to see your items.
+					</label>
 				</div>
-				{cart &&
-					cart.map((item, index) => {
-						return (
-							<Cart
-								key={index}
-								color={_.get(item, 'color', '')}
-								image={_.get(item, 'image', '')}
-								//isFreeShipping={item.isFreeShipping}
-								quantity={_.get(item, 'quantity', 0)}
-								size={_.get(item, 'size', '')}
-								title={_.get(item, 'title', '')}
-								price={_.get(item, 'price', 0)}
-								onPressEdit={() =>
-									onPressUpdateCart(
-										item.productId,
-										_.get(item, '_id', ''),
-									)
-								}
-							/>
-						);
-					})}
-				<div className={cartStyles.itemCountContainer}>
-					<label className={cartStyles.itemCountText}>Total</label>
-					<label
-						className={
-							cartStyles.itemCountText
-						}>{`$${totalCost}`}</label>
+				<div className={cartStyles.buttonContainer}>
+					<button
+						className={cartStyles.signInButton}
+						onClick={() => navigate('/login')}>
+						Sign In
+					</button>
+					<button
+						className={cartStyles.registerButton}
+						onClick={() => navigate('/register')}>
+						Register
+					</button>
 				</div>
 			</div>
-			<div className={cartStyles.formContainer}>
-				<label className={cartStyles.billText}>
-					Billing Information
-				</label>
-				<form className={cartStyles.form}>
-					<Input
-						name="fullName"
-						type="text"
-						value={formData.fullName}
-						onChangeInput={onChangeInput}
-						label="Complete Name (FirstName, LastName)"
-						error={fromError.fullNameErr}
-					/>
-					<Input
-						name="address"
-						type="text"
-						value={formData.address}
-						onChangeInput={onChangeInput}
-						label="Full Address"
-						error={fromError.addressErr}
-					/>
-					<Input
-						name="city"
-						type="text"
-						value={formData.city}
-						onChangeInput={onChangeInput}
-						label="City"
-						error={fromError.cityErr}
-					/>
-					<Input
-						name="province"
-						type="text"
-						value={formData.province}
-						onChangeInput={onChangeInput}
-						label="State/Province"
-						error={fromError.provinceErr}
-					/>
-					<Input
-						name="mobileNo"
-						type="text"
-						value={formData.mobileNo}
-						onChangeInput={onChangeInput}
-						label="Mobile #"
-						error={fromError.mobileNoErr}
-					/>
-					<input
-						type="submit"
-						onClick={onSubmitBill}
-						className={cartStyles.submitButton}
-						value="Complete Purchase"
-					/>
-				</form>
+		);
+	} else {
+		return (
+			<div className={cartStyles.mainContainer}>
+				<div className={cartStyles.productContainer}>
+					<div className={cartStyles.itemCountContainer}>
+						<label className={cartStyles.itemCountText}>
+							Item: {cart.length}
+						</label>
+						<img
+							src={FreeDelivery}
+							className={cartStyles.freeimage}
+						/>
+					</div>
+					{cart &&
+						cart.map((item, index) => {
+							return (
+								<Cart
+									key={index}
+									color={_.get(item, 'color', '')}
+									image={_.get(item, 'image', '')}
+									//isFreeShipping={item.isFreeShipping}
+									quantity={_.get(item, 'quantity', 0)}
+									size={_.get(item, 'size', '')}
+									title={_.get(item, 'title', '')}
+									price={_.get(item, 'price', 0)}
+									onPressEdit={() =>
+										onPressUpdateCart(
+											item.productId,
+											_.get(item, '_id', ''),
+										)
+									}
+								/>
+							);
+						})}
+					<div className={cartStyles.itemCountContainer}>
+						<label className={cartStyles.itemCountText}>
+							Total
+						</label>
+						<label
+							className={
+								cartStyles.itemCountText
+							}>{`$${totalCost}`}</label>
+					</div>
+				</div>
+				<div className={cartStyles.formContainer}>
+					<label className={cartStyles.billText}>
+						Billing Information
+					</label>
+					<form className={cartStyles.form}>
+						<Input
+							name="fullName"
+							type="text"
+							value={formData.fullName}
+							onChangeInput={onChangeInput}
+							label="Complete Name (FirstName, LastName)"
+							error={fromError.fullNameErr}
+						/>
+						<Input
+							name="address"
+							type="text"
+							value={formData.address}
+							onChangeInput={onChangeInput}
+							label="Full Address"
+							error={fromError.addressErr}
+						/>
+						<Input
+							name="city"
+							type="text"
+							value={formData.city}
+							onChangeInput={onChangeInput}
+							label="City"
+							error={fromError.cityErr}
+						/>
+						<Input
+							name="province"
+							type="text"
+							value={formData.province}
+							onChangeInput={onChangeInput}
+							label="State/Province"
+							error={fromError.provinceErr}
+						/>
+						<Input
+							name="mobileNo"
+							type="text"
+							value={formData.mobileNo}
+							onChangeInput={onChangeInput}
+							label="Mobile #"
+							error={fromError.mobileNoErr}
+						/>
+						<input
+							type="submit"
+							onClick={onSubmitBill}
+							className={cartStyles.submitButton}
+							value="Complete Purchase"
+						/>
+					</form>
+				</div>
+				<CartProductModal
+					visible={modalVisibility}
+					productId={productId}
+					cartItemId={cartItemId}
+					onPressClose={() => setModalVisibility(false)}
+				/>
 			</div>
-			<CartProductModal
-				visible={modalVisibility}
-				productId={productId}
-				cartItemId={cartItemId}
-				onPressClose={() => setModalVisibility(false)}
-			/>
-		</div>
-	);
+		);
+	}
 };
 
 const cartStyles = {
@@ -284,6 +327,16 @@ const cartStyles = {
 		'text-white bg-blue-600 hover:bg-blue-600 focus:ring-1 focus:outline-none focus:ring-blue-600 font-medium rounded-sm text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-600',
 	editButton:
 		'inline-block px-4 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out',
+	container:
+		'container max-w-lg mx-auto flex flex-col h-screen items-center justify-center px-2',
+	textContainer: 'text-center mt-4 mb-4',
+	signInButton:
+		'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
+	registerButton:
+		'bg-transparent hover:bg-slate-100 hover:text-blue-700 hover:border-blue-500 text-blue-700 font-semibold hover:text-white py-2.5 ml-2 px-10 border border-blue-500 rounded-lg hover:border-transparent',
+	cartNotItemText: 'text-2xl dark:black',
+	cartLoginText: 'text-lg dark:black',
+	buttonContainer: 'flex flex-row mt-4 mb-4',
 };
 
 export default ShoppingCart;

@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import {
+	CLEAR_REDUX_STORE,
 	ADD_TO_USER_REQUEST,
 	ADD_TO_USER_SUCCESS,
 	ADD_TO_USER_ERROR,
@@ -15,6 +16,10 @@ import {
 } from './user.types';
 import * as userService from '../../services/UserService';
 import { User } from '../../types';
+
+export const logoutUser = () => {
+	return { type: CLEAR_REDUX_STORE };
+};
 
 export const fetchUser = (id: string) => {
 	return async (dispatch: Dispatch) => {

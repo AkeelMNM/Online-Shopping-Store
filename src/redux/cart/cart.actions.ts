@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import {
+	CLEAR_REDUX_STORE,
 	FETCH_CART_ERROR,
 	FETCH_CART_REQUEST,
 	FETCH_CART_SUCCESS,
@@ -15,6 +16,10 @@ import {
 } from './cart.types';
 import * as cartService from '../../services/CartService';
 import { CartItem } from '../../types';
+
+export const clearCartItems = () => {
+	return { type: CLEAR_REDUX_STORE };
+};
 
 export const fetchUsersCartItems = (id: string) => {
 	return async (dispatch: Dispatch) => {
