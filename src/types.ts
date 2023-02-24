@@ -60,4 +60,5 @@ export type Login = {
 	_id: string;
 	isActive: boolean;
 	isVerified: boolean;
+	jwtToken: string;
 };

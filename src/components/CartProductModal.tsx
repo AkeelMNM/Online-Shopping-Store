@@ -3,7 +3,7 @@ import { CartItem, Product, User } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
-import { addItemToCart, removeCartItem, updateCartItem } from '../redux/cart';
+import { removeCartItem, updateCartItem } from '../redux/cart';
 
 type CartProductModalProps = {
 	visible: Boolean;
@@ -36,14 +36,16 @@ const CartProductModal = ({
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState('');
 	const [selectedCount, setSelectedCount] = useState(0);
+	const [productImage, setProductImage] = useState('');
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
 
 	useEffect(() => {
-		setSelectedColor(cartItem && cartItem.color);
-		setSelectedSize(cartItem && cartItem.size);
-		setSelectedCount(cartItem && cartItem.quantity);
+		setSelectedColor(_.get(cartItem, 'color', ''));
+		setSelectedSize(_.get(cartItem, 'size', ''));
+		setSelectedCount(_.get(cartItem, 'quantity', 0));
+		setProductImage(_.get(cartItem, 'image', ''));
 	}, [cartItem]);
 
 	const onPressUpdateItem = () => {
@@ -55,7 +57,7 @@ const CartProductModal = ({
 		if (variant) {
 			const item: CartItem = {
 				_id: cartItem._id,
-				userId: _.get(user, '_id', ''), // TO DO: Get the logged in user's id
+				userId: _.get(user, '_id', ''),
 				productId: product.id,
 				variantId: variant.id,
 				quantity: selectedCount,
@@ -79,6 +81,10 @@ const CartProductModal = ({
 		onPressClose();
 	};
 
+	const onPressChangeImage = (index: number): void => {
+		setProductImage(_.get(product, `variants[${index}].image`, ''));
+	};
+
 	if (visible) {
 		return (
 			<div className={productModalStyles.mainContainer}>
@@ -97,7 +103,7 @@ const CartProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={_.get(cartItem, 'image', '')}
+							src={productImage}
 							crossOrigin="anonymous"
 						/>
 					</div>
@@ -115,10 +121,14 @@ const CartProductModal = ({
 										<button
 											value={selectedColor}
 											key={index}
-											className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`}
-											onClick={() =>
+											className={productModalStyles.productColor}
+											style={{
+												backgroundColor: item.color,
+											}}
+											onClick={() => {
 												setSelectedColor(item.color)
-											}
+												onPressChangeImage(index);
+											}}
 										/>
 									);
 								})}
@@ -207,7 +217,7 @@ const productModalStyles = {
 	colorContainer: 'flex pt-5',
 	labelText: 'mr-3',
 	productColor:
-		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none',
+		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none ml-1',
 	sizeContainer: 'flex items-center pt-5',
 	selectContainer:
 		'rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10',

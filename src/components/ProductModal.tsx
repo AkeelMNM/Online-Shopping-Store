@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CartItem, Product } from '../types';
+import { CartItem, Product, User } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
@@ -21,25 +21,28 @@ const ProductModal = ({
 			return item.id === productId;
 		});
 	});
+	const user: User = useAppSelector(state => state.user.user);
 
 	const dispatch = useAppDispatch();
-	const [selectedColor, setSelectedColor] = useState(
-		product && product.variants[1].color,
-	);
-	const [selectedSize, setSelectedSize] = useState(
-		product && product.variants[1].size,
-	);
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedSize, setSelectedSize] = useState('');
 	const [selectedCount, setSelectedCount] = useState(1);
+	const [productImage, setProductImage] = useState('');
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
 
 	useEffect(() => {
-		// setSelectedColor(product && product.variants[1].color);
-		// setSelectedSize(product && product.variants[1].size);
-	}, []);
+		setSelectedColor(_.get(product, 'variants[0].color', ''));
+		setSelectedSize(_.get(product, 'variants[0].size', ''));
+		setProductImage(_.get(product, 'variants[0].image', ''));
+	}, [product]);
 
-	const onPressAddToCart = () => {
+	const onPressChangeImage = (index: number): void => {
+		setProductImage(_.get(product, `variants[${index}].image`, ''));
+	};
+
+	const onPressAddToCart = (): void => {
 		const variant = _.find(product.variants, {
 			color: selectedColor,
 			size: selectedSize,
@@ -47,7 +50,7 @@ const ProductModal = ({
 
 		if (variant) {
 			const cartItem: CartItem = {
-				userId: '1', // TO DO: Get the logged in user's id
+				userId: _.get(user, '_id', ''),
 				productId: product.id,
 				variantId: variant.id,
 				quantity: selectedCount,
@@ -84,7 +87,7 @@ const ProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={product.variants[0].image}
+							src={productImage}
 							crossOrigin="anonymous"
 						/>
 					</div>
@@ -101,21 +104,17 @@ const ProductModal = ({
 									return (
 										<button
 											key={index}
-											className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`}
-											onClick={() =>
-												setSelectedColor(item.color)
-											}
+											className={productModalStyles.productColor}
+											style={{
+												backgroundColor: item.color,
+											}}
+											onClick={() => {
+												setSelectedColor(item.color);
+												onPressChangeImage(index);
+											}}
 										/>
 									);
 								})}
-							{/* <button
-								className={
-									productModalStyles.productColor
-								}></button>
-							<button
-								className={`${productModalStyles.productColor} ml-1 bg-gray-700`}></button>
-							<button
-								className={`${productModalStyles.productColor} ml-1 bg-indigo-500`}></button> */}
 						</div>
 						<div className={productModalStyles.sizeContainer}>
 							<span className={productModalStyles.labelText}>
@@ -195,7 +194,7 @@ const productModalStyles = {
 	colorContainer: 'flex pt-5',
 	labelText: 'mr-3',
 	productColor:
-		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none',
+		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none  ml-1',
 	sizeContainer: 'flex items-center pt-5',
 	selectContainer:
 		'rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10',

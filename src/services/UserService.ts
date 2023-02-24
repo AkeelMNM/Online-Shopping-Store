@@ -52,8 +52,6 @@ export const storeUser = async (user: User): Promise<User> => {
 			body: JSON.stringify(user),
 		});
 
-		console.log(response);
-
 		const responseData = await response.json();
 
 		return responseData || {};

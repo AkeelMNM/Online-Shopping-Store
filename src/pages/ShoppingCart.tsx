@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
 import { CartProductModal, Input } from '../components';
 import { fetchUsersCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
 import { CartItem, Invoice, User } from '../types';
-
-type CartProps = {
-	title: string;
-	size: string;
-	color: string;
-	quantity: number;
-	price: number;
-	image: string;
-	onPressEdit: () => void;
-};
 
 const INITIAL_STATE: Invoice = {
 	fullName: '',
@@ -32,6 +22,16 @@ const ERROR_INITIAL_STATE = {
 	cityErr: '',
 	provinceErr: '',
 	mobileNoErr: '',
+};
+
+type CartProps = {
+	title: string;
+	size: string;
+	color: string;
+	quantity: number;
+	price: number;
+	image: string;
+	onPressEdit: () => void;
 };
 
 const Cart = ({
@@ -173,30 +173,39 @@ const ShoppingCart = () => {
 		}
 	};
 
-	if (!isUserLoggedIn) {
+	if (cart.length <= 0) {
 		return (
 			<div className={cartStyles.container}>
 				<div className={cartStyles.textContainer}>
 					<label className={cartStyles.cartNotItemText}>
 						You don't have any items in your cart.
 					</label>
-					<br></br>
-					<label className={cartStyles.cartLoginText}>
-						Have an account? Sign in to see your items.
-					</label>
 				</div>
-				<div className={cartStyles.buttonContainer}>
-					<button
-						className={cartStyles.signInButton}
-						onClick={() => navigate('/login')}>
-						Sign In
-					</button>
+				{!isUserLoggedIn ? (
+					<>
+						<label className={cartStyles.cartLoginText}>
+							Have an account? Sign in to see your items.
+						</label>
+						<div className={cartStyles.buttonContainer}>
+							<button
+								className={cartStyles.signInButton}
+								onClick={() => navigate('/login')}>
+								Sign In
+							</button>
+							<button
+								className={cartStyles.registerButton}
+								onClick={() => navigate('/register')}>
+								Register
+							</button>
+						</div>
+					</>
+				) : (
 					<button
 						className={cartStyles.registerButton}
-						onClick={() => navigate('/register')}>
-						Register
+						onClick={() => navigate('/products')}>
+						Browse Products
 					</button>
-				</div>
+				)}
 			</div>
 		);
 	} else {
@@ -329,11 +338,11 @@ const cartStyles = {
 		'inline-block px-4 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out',
 	container:
 		'container max-w-lg mx-auto flex flex-col h-screen items-center justify-center px-2',
-	textContainer: 'text-center mt-4 mb-4',
+	textContainer: 'text-center mt-4 mb-2',
 	signInButton:
 		'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
 	registerButton:
-		'bg-transparent hover:bg-slate-100 hover:text-blue-700 hover:border-blue-500 text-blue-700 font-semibold hover:text-white py-2.5 ml-2 px-10 border border-blue-500 rounded-lg hover:border-transparent',
+		'bg-transparent hover:bg-slate-100 hover:text-blue-600 hover:border-blue-400 text-blue-700 font-semibold hover:text-white py-2.5 ml-2 px-10 border border-blue-500 rounded-lg hover:border-transparent',
 	cartNotItemText: 'text-2xl dark:black',
 	cartLoginText: 'text-lg dark:black',
 	buttonContainer: 'flex flex-row mt-4 mb-4',
