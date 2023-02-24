@@ -40,6 +40,7 @@ const CartProductModal = ({
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
+	const productImages = _.uniqBy(product && product.variants, 'image');
 
 	useEffect(() => {
 		setSelectedColor(_.get(cartItem, 'color', ''));
@@ -53,7 +54,7 @@ const CartProductModal = ({
 			color: selectedColor,
 			size: selectedSize,
 		});
-
+	
 		if (variant) {
 			const item: CartItem = {
 				_id: cartItem._id,
@@ -82,7 +83,7 @@ const CartProductModal = ({
 	};
 
 	const onPressChangeImage = (index: number): void => {
-		setProductImage(_.get(product, `variants[${index}].image`, ''));
+		setProductImage(productImages[index].image);
 	};
 
 	if (visible) {

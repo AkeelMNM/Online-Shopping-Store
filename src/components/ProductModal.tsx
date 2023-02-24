@@ -31,6 +31,7 @@ const ProductModal = ({
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
+	const productImages = _.uniqBy(product && product.variants, 'image');
 
 	useEffect(() => {
 		setSelectedColor(_.get(product, 'variants[0].color', ''));
@@ -39,7 +40,7 @@ const ProductModal = ({
 	}, [product]);
 
 	const onPressChangeImage = (index: number): void => {
-		setProductImage(_.get(product, `variants[${index}].image`, ''));
+		setProductImage(productImages[index].image);
 	};
 
 	const onPressAddToCart = (): void => {
