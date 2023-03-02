@@ -9,6 +9,7 @@ export const loginUser = async (
 	try {
 		const response = await fetch(`${API_NAME}/user/login`, {
 			method: 'POST',
+			credentials: 'include',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',

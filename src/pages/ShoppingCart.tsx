@@ -70,7 +70,7 @@ const ShoppingCart = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const user: User = useAppSelector(state => state.user.user);
-	const isUserLoggedIn: User = useAppSelector(
+	const isUserLoggedIn: boolean = useAppSelector(
 		state => state.user.isUserLoggedIn,
 	);
 	const cart: CartItem[] = useAppSelector(state => state.cart.cart);

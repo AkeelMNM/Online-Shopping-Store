@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CartItem, Product, User } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
@@ -22,8 +23,12 @@ const ProductModal = ({
 		});
 	});
 	const user: User = useAppSelector(state => state.user.user);
+	const isUserLoggedIn: boolean = useAppSelector(
+		state => state.user.isUserLoggedIn,
+	);
 
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState('');
 	const [selectedCount, setSelectedCount] = useState(1);
@@ -69,6 +74,11 @@ const ProductModal = ({
 			alert('Sorry this product not available');
 		}
 	};
+
+	const onPressLogin = (): void => {
+		onPressClose();
+		navigate('/login');
+	}
 
 	if (visible) {
 		return (
@@ -169,11 +179,20 @@ const ProductModal = ({
 							{product.variants[0].price}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
-							<button
-								className={productModalStyles.button}
-								onClick={onPressAddToCart}>
-								Add to Cart
-							</button>
+							{
+								isUserLoggedIn ? <button
+									className={productModalStyles.button}
+									onClick={onPressAddToCart}>
+									Add to Cart
+								</button> : <div>
+									<label className={productModalStyles.loginLabel}>**Please login to add this item to cart</label>
+									<button
+										className={productModalStyles.button}
+										onClick={onPressLogin}>
+										Log in
+									</button></div>
+							}
+
 						</div>
 					</div>
 				</div>
@@ -204,10 +223,11 @@ const productModalStyles = {
 	pickerContainer: 'flex flex items-center pt-5 pb-5',
 	priceText: 'title-font font-medium text-2xl text-gray-900',
 	buttonContainer: 'w-full p-3',
-	button: 'inline-block w-full px-6 py-2.5 mb-2 bg-indigo-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-indigo-600 hover:shadow-lg focus:bg-indigo-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-700 active:shadow-lg transition duration-150 ease-in-out',
+	button: 'inline-block w-full px-6 py-2.5 mt-1 mb-2 bg-indigo-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-indigo-600 hover:shadow-lg focus:bg-indigo-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-700 active:shadow-lg transition duration-150 ease-in-out',
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
 	closeContainer: 'absolute top-0 right-0 cursor-pointer',
+	loginLabel: 'text-sm font-medium'
 };
 
 export { ProductModal };

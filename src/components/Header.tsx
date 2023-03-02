@@ -10,7 +10,7 @@ const Header = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const path = window.location.pathname;
-	const isUserLoggedIn: User = useAppSelector(
+	const isUserLoggedIn: boolean = useAppSelector(
 		state => state.user.isUserLoggedIn,
 	);
 
