@@ -54,7 +54,7 @@ const CartProductModal = ({
 			color: selectedColor,
 			size: selectedSize,
 		});
-	
+
 		if (variant) {
 			const item: CartItem = {
 				_id: cartItem._id,
@@ -122,12 +122,14 @@ const CartProductModal = ({
 										<button
 											value={selectedColor}
 											key={index}
-											className={productModalStyles.productColor}
+											className={
+												productModalStyles.productColor
+											}
 											style={{
 												backgroundColor: item.color,
 											}}
 											onClick={() => {
-												setSelectedColor(item.color)
+												setSelectedColor(item.color);
 												onPressChangeImage(index);
 											}}
 										/>

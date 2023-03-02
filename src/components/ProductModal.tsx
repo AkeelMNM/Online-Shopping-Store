@@ -78,7 +78,7 @@ const ProductModal = ({
 	const onPressLogin = (): void => {
 		onPressClose();
 		navigate('/login');
-	}
+	};
 
 	if (visible) {
 		return (
@@ -115,7 +115,9 @@ const ProductModal = ({
 									return (
 										<button
 											key={index}
-											className={productModalStyles.productColor}
+											className={
+												productModalStyles.productColor
+											}
 											style={{
 												backgroundColor: item.color,
 											}}
@@ -179,20 +181,27 @@ const ProductModal = ({
 							{product.variants[0].price}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
-							{
-								isUserLoggedIn ? <button
+							{isUserLoggedIn ? (
+								<button
 									className={productModalStyles.button}
 									onClick={onPressAddToCart}>
 									Add to Cart
-								</button> : <div>
-									<label className={productModalStyles.loginLabel}>**Please login to add this item to cart</label>
+								</button>
+							) : (
+								<div>
+									<label
+										className={
+											productModalStyles.loginLabel
+										}>
+										**Please login to add this item to cart
+									</label>
 									<button
 										className={productModalStyles.button}
 										onClick={onPressLogin}>
 										Log in
-									</button></div>
-							}
-
+									</button>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -227,7 +236,7 @@ const productModalStyles = {
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
 	closeContainer: 'absolute top-0 right-0 cursor-pointer',
-	loginLabel: 'text-sm font-medium'
+	loginLabel: 'text-sm font-medium',
 };
 
 export { ProductModal };

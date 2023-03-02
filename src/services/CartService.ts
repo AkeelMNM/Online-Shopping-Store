@@ -17,7 +17,6 @@ export const fetchUsersCartItems = async (
 		} else {
 			return [];
 		}
-
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -34,7 +33,6 @@ export const storeCartItems = async (item: CartItem): Promise<CartItem> => {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(item),
-
 		});
 
 		const responseData = await response.json();
