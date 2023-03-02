@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "parcel index.html --port 3000",
+		"start": "parcel index.html --https --cert ./CA/localhost.pem --key ./CA/localhost-key.pem --port 3000",
 		"build": "parcel index.tsx",
 		"format": "prettier --write \"**/*.+(js|jsx|json|md|tsx|ts)\""
 	},
@@ -16,6 +16,7 @@
 		"@types/react": "^18.0.26",
 		"@types/react-dom": "^18.0.9",
 		"@types/react-redux": "^7.1.24",
+		"crypto-js": "^4.1.1",
 		"lodash": "^4.17.21",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
@@ -24,11 +25,15 @@
 		"react-responsive-carousel": "^3.2.23",
 		"react-router-dom": "^6.4.2",
 		"redux": "^4.2.0",
-		"typescript": "*"
+		"redux-persist": "^6.0.0",
+		"typescript": "*",
+		"validator": "^13.9.0"
 	},
 	"devDependencies": {
 		"@parcel/transformer-image": "2.0.0-rc.0",
+		"@types/crypto-js": "^4.1.1",
 		"@types/node": "^18.11.18",
+		"@types/validator": "^13.7.12",
 		"@typescript-eslint/eslint-plugin": "^5.46.0",
 		"@typescript-eslint/parser": "^5.46.0",
 		"autoprefixer": "^10.4.13",

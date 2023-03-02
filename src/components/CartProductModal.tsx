@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { CartItem, Product } from '../types';
+import { CartItem, Product, User } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
-import { addItemToCart, removeCartItem, updateCartItem } from '../redux/cart';
+import { removeCartItem, updateCartItem } from '../redux/cart';
 
 type CartProductModalProps = {
 	visible: Boolean;
@@ -30,18 +30,23 @@ const CartProductModal = ({
 		});
 	});
 
+	const user: User = useAppSelector(state => state.user.user);
+
 	const dispatch = useAppDispatch();
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState('');
 	const [selectedCount, setSelectedCount] = useState(0);
+	const [productImage, setProductImage] = useState('');
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
+	const productImages = _.uniqBy(product && product.variants, 'image');
 
 	useEffect(() => {
-		setSelectedColor(cartItem && cartItem.color);
-		setSelectedSize(cartItem && cartItem.size);
-		setSelectedCount(cartItem && cartItem.quantity);
+		setSelectedColor(_.get(cartItem, 'color', ''));
+		setSelectedSize(_.get(cartItem, 'size', ''));
+		setSelectedCount(_.get(cartItem, 'quantity', 0));
+		setProductImage(_.get(cartItem, 'image', ''));
 	}, [cartItem]);
 
 	const onPressUpdateItem = () => {
@@ -53,7 +58,7 @@ const CartProductModal = ({
 		if (variant) {
 			const item: CartItem = {
 				_id: cartItem._id,
-				userId: '1', // TO DO: Get the logged in user's id
+				userId: _.get(user, '_id', ''),
 				productId: product.id,
 				variantId: variant.id,
 				quantity: selectedCount,
@@ -77,6 +82,10 @@ const CartProductModal = ({
 		onPressClose();
 	};
 
+	const onPressChangeImage = (index: number): void => {
+		setProductImage(productImages[index].image);
+	};
+
 	if (visible) {
 		return (
 			<div className={productModalStyles.mainContainer}>
@@ -95,7 +104,7 @@ const CartProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={_.get(cartItem, 'image', '')}
+							src={productImage}
 							crossOrigin="anonymous"
 						/>
 					</div>
@@ -113,10 +122,16 @@ const CartProductModal = ({
 										<button
 											value={selectedColor}
 											key={index}
-											className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`}
-											onClick={() =>
-												setSelectedColor(item.color)
+											className={
+												productModalStyles.productColor
 											}
+											style={{
+												backgroundColor: item.color,
+											}}
+											onClick={() => {
+												setSelectedColor(item.color);
+												onPressChangeImage(index);
+											}}
 										/>
 									);
 								})}
@@ -205,7 +220,7 @@ const productModalStyles = {
 	colorContainer: 'flex pt-5',
 	labelText: 'mr-3',
 	productColor:
-		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none',
+		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none ml-1',
 	sizeContainer: 'flex items-center pt-5',
 	selectContainer:
 		'rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10',
@@ -214,7 +229,7 @@ const productModalStyles = {
 	pickerContainer: 'flex flex items-center pt-5 pb-5',
 	priceText: 'title-font font-medium text-2xl text-gray-900',
 	buttonContainer: 'w-full p-3',
-	button: 'inline-block w-full px-6 py-2.5 mb-2 bg-indigo-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-indigo-600 hover:shadow-lg focus:bg-indigo-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-700 active:shadow-lg transition duration-150 ease-in-out',
+	button: 'inline-block w-full px-6 py-2.5 mb-2 bg-blue-600 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-700 active:shadow-lg transition duration-150 ease-in-out',
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
 	closeContainer: 'absolute top-0 right-0 cursor-pointer',

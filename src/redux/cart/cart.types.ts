@@ -1,3 +1,4 @@
+export const CLEAR_REDUX_STORE = 'general/clear_redux_store';
 export const FETCH_CART_REQUEST: string = 'cart/fetch_cart_request';
 export const FETCH_CART_SUCCESS: string = 'cart/fetch_cart_success';
 export const FETCH_CART_ERROR: string = 'cart/fetch_cart_error';

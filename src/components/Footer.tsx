@@ -1,36 +1,43 @@
 import React from 'react';
 
 const Footer = () => {
-	return (
-		<footer className={footerStyles.mainContainer}>
-			<span className={footerStyles.rightsText}>
-				© 2022 <a className={footerStyles.hoverText}>FashionStudio™</a>.
-				All Rights Reserved.
-			</span>
-			<ul className={footerStyles.linkContainer}>
-				<li>
-					<a href="#" className={footerStyles.link}>
-						About
-					</a>
-				</li>
-				<li>
-					<a href="#" className={footerStyles.link}>
-						Privacy Policy
-					</a>
-				</li>
-				<li>
-					<a href="#" className={footerStyles.link}>
-						Licensing
-					</a>
-				</li>
-				<li>
-					<a href="#" className={footerStyles.hoverText}>
-						Contact
-					</a>
-				</li>
-			</ul>
-		</footer>
-	);
+	const path = window.location.pathname;
+
+	if (path === '/login' || path === '/register') {
+		return <></>;
+	} else {
+		return (
+			<footer className={footerStyles.mainContainer}>
+				<span className={footerStyles.rightsText}>
+					© 2022{' '}
+					<a className={footerStyles.hoverText}>FashionStudio™</a>.
+					All Rights Reserved.
+				</span>
+				<ul className={footerStyles.linkContainer}>
+					<li>
+						<a href="#" className={footerStyles.link}>
+							About
+						</a>
+					</li>
+					<li>
+						<a href="#" className={footerStyles.link}>
+							Privacy Policy
+						</a>
+					</li>
+					<li>
+						<a href="#" className={footerStyles.link}>
+							Licensing
+						</a>
+					</li>
+					<li>
+						<a href="#" className={footerStyles.hoverText}>
+							Contact
+						</a>
+					</li>
+				</ul>
+			</footer>
+		);
+	}
 };
 
 const footerStyles = {

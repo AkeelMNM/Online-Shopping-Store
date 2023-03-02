@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CartItem, Product } from '../types';
+import { useNavigate } from 'react-router-dom';
+import { CartItem, Product, User } from '../types';
 import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
@@ -21,25 +22,33 @@ const ProductModal = ({
 			return item.id === productId;
 		});
 	});
+	const user: User = useAppSelector(state => state.user.user);
+	const isUserLoggedIn: boolean = useAppSelector(
+		state => state.user.isUserLoggedIn,
+	);
 
 	const dispatch = useAppDispatch();
-	const [selectedColor, setSelectedColor] = useState(
-		product && product.variants[1].color,
-	);
-	const [selectedSize, setSelectedSize] = useState(
-		product && product.variants[1].size,
-	);
+	const navigate = useNavigate();
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedSize, setSelectedSize] = useState('');
 	const [selectedCount, setSelectedCount] = useState(1);
+	const [productImage, setProductImage] = useState('');
 
 	const productColors = _.uniqBy(product && product.variants, 'color');
 	const productSizes = _.uniqBy(product && product.variants, 'size');
+	const productImages = _.uniqBy(product && product.variants, 'image');
 
 	useEffect(() => {
-		// setSelectedColor(product && product.variants[1].color);
-		// setSelectedSize(product && product.variants[1].size);
-	}, []);
+		setSelectedColor(_.get(product, 'variants[0].color', ''));
+		setSelectedSize(_.get(product, 'variants[0].size', ''));
+		setProductImage(_.get(product, 'variants[0].image', ''));
+	}, [product]);
 
-	const onPressAddToCart = () => {
+	const onPressChangeImage = (index: number): void => {
+		setProductImage(productImages[index].image);
+	};
+
+	const onPressAddToCart = (): void => {
 		const variant = _.find(product.variants, {
 			color: selectedColor,
 			size: selectedSize,
@@ -47,7 +56,7 @@ const ProductModal = ({
 
 		if (variant) {
 			const cartItem: CartItem = {
-				userId: '1', // TO DO: Get the logged in user's id
+				userId: _.get(user, '_id', ''),
 				productId: product.id,
 				variantId: variant.id,
 				quantity: selectedCount,
@@ -64,6 +73,11 @@ const ProductModal = ({
 		} else {
 			alert('Sorry this product not available');
 		}
+	};
+
+	const onPressLogin = (): void => {
+		onPressClose();
+		navigate('/login');
 	};
 
 	if (visible) {
@@ -84,7 +98,7 @@ const ProductModal = ({
 						<img
 							alt="product-image"
 							className={productModalStyles.image}
-							src={product.variants[0].image}
+							src={productImage}
 							crossOrigin="anonymous"
 						/>
 					</div>
@@ -101,21 +115,19 @@ const ProductModal = ({
 									return (
 										<button
 											key={index}
-											className={`${productModalStyles.productColor} ml-1 bg-[${item.color}]`}
-											onClick={() =>
-												setSelectedColor(item.color)
+											className={
+												productModalStyles.productColor
 											}
+											style={{
+												backgroundColor: item.color,
+											}}
+											onClick={() => {
+												setSelectedColor(item.color);
+												onPressChangeImage(index);
+											}}
 										/>
 									);
 								})}
-							{/* <button
-								className={
-									productModalStyles.productColor
-								}></button>
-							<button
-								className={`${productModalStyles.productColor} ml-1 bg-gray-700`}></button>
-							<button
-								className={`${productModalStyles.productColor} ml-1 bg-indigo-500`}></button> */}
 						</div>
 						<div className={productModalStyles.sizeContainer}>
 							<span className={productModalStyles.labelText}>
@@ -169,11 +181,27 @@ const ProductModal = ({
 							{product.variants[0].price}
 						</span>
 						<div className={productModalStyles.buttonContainer}>
-							<button
-								className={productModalStyles.button}
-								onClick={onPressAddToCart}>
-								Add to Cart
-							</button>
+							{isUserLoggedIn ? (
+								<button
+									className={productModalStyles.button}
+									onClick={onPressAddToCart}>
+									Add to Cart
+								</button>
+							) : (
+								<div>
+									<label
+										className={
+											productModalStyles.loginLabel
+										}>
+										**Please login to add this item to cart
+									</label>
+									<button
+										className={productModalStyles.button}
+										onClick={onPressLogin}>
+										Log in
+									</button>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -195,7 +223,7 @@ const productModalStyles = {
 	colorContainer: 'flex pt-5',
 	labelText: 'mr-3',
 	productColor:
-		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none',
+		'border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none  ml-1',
 	sizeContainer: 'flex items-center pt-5',
 	selectContainer:
 		'rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10',
@@ -204,10 +232,11 @@ const productModalStyles = {
 	pickerContainer: 'flex flex items-center pt-5 pb-5',
 	priceText: 'title-font font-medium text-2xl text-gray-900',
 	buttonContainer: 'w-full p-3',
-	button: 'inline-block w-full px-6 py-2.5 mb-2 bg-indigo-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-indigo-600 hover:shadow-lg focus:bg-indigo-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-700 active:shadow-lg transition duration-150 ease-in-out',
+	button: 'inline-block w-full px-6 py-2.5 mt-1 mb-2 bg-indigo-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-indigo-600 hover:shadow-lg focus:bg-indigo-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-700 active:shadow-lg transition duration-150 ease-in-out',
 	svg: 'w-4 h-4',
 	selectDiv: 'relative',
 	closeContainer: 'absolute top-0 right-0 cursor-pointer',
+	loginLabel: 'text-sm font-medium',
 };
 
 export { ProductModal };
