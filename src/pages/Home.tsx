@@ -97,11 +97,13 @@ const Home = () => {
 const homeStyles = {
 	mainContainer: 'flex flex-col',
 	carouselContainer: 'p-5',
-	homeCardContainer: 'flex flex-row justify-between p-10',
+	homeCardContainer:
+		'flex flex-col items-center xl:flex lg:flex xl:flex-row lg:flex-row xl:w-full lg:w-full xl:justify-between lg:justify-between p-10',
 	bestSellerContainer: 'flex flex-col place-items-center',
 	bottomContainer: 'flex flex-col place-items-center',
 	bestSellerText: 'p-5 font-serif text-2xl font-semibold',
-	productCardContainer: 'grid grid-cols-2 gap-4 p-10',
+	productCardContainer:
+		'grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 gap-4 p-10',
 	partnerText: 'p-5 font-serif text-2xl font-semibold',
 };
 

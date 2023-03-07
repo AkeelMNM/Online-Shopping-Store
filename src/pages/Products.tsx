@@ -160,15 +160,16 @@ const Products = () => {
 
 const productStyles = {
 	mainContainer: 'h-full',
-	gridContainer: 'grid grid-cols-5 pt-5',
+	gridContainer: 'grid grid-cols-1 xl:grid-cols-5 lg:xl:grid-cols-5 pt-5',
 	filterContainer:
 		'col-span-1 px-2 bg-white shadow-md rounded px-8 pb-2 ml-1 mb-4 pt-2',
 	filterTitle: 'mb-4 pt-1 font-semibold',
-	filterOrderList: 'w-28 text-sm font-medium bg-white dark:text-white',
-	filterList: 'w-full rounded-t-lg border-gray-200 dark:border-gray-600',
+	filterOrderList:
+		'grid gap-1 grid-cols-4 xl:grid-cols-1 lg:grid-cols-1 text-sm font-medium bg-white dark:text-white',
+	filterList: 'w-full ml-2 rounded-t-lg border-gray-200 dark:border-gray-600',
 	productContainer: 'col-span-4 px-2 overflow-auto h-screen',
 	productGrid:
-		'grid grid-cols-4 gap-4 justify-between bg-white rounded relative pt-2 px-2',
+		'grid xl:grid-cols-4 lg:grid-cols-4 gap-4 xl:justify-between lg:justify-between bg-white rounded relative pt-2 px-2',
 };
 
 export default Products;

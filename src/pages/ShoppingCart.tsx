@@ -317,10 +317,10 @@ const ShoppingCart = () => {
 };
 
 const cartStyles = {
-	mainContainer: 'flex p-1 mb-[0.3rem]',
-	productContainer: 'w-1/2 flex-col bg-white px-8 pb-2 ml-1 mt-6 pt-4',
+	mainContainer: 'flex flex-wrap h-full g-6',
+	productContainer: 'xl:ml-0 xl:w-1/2 lg:w-1/2 md:w-8/12 md:mb-0 p-2',
 	formContainer:
-		'w-1/2 flex-col bg-white px-8 pb-2 ml-1 mb-5 pt-4 shadow-md rounded',
+		'w-full xl:ml-0 xl:w-1/2 lg:w-1/2 md:w-8/12 md:mb-0 p-2 lg:mb-[0.3rem]',
 	itemCountContainer:
 		'flex flex-row justify-between shadow-md rounded p-2 mb-4',
 	itemCountText: 'mt-4 pt-2 font-semibold',

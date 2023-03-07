@@ -1,6 +1,6 @@
 import { User, Login } from '../types';
 
-const API_NAME: string = process.env.USER_API_ADDRESS || '';
+const API_NAME: string = process.env.REACT_APP_USER_API_ADDRESS || '';
 
 export const loginUser = async (
 	email: string,
