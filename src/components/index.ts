@@ -6,3 +6,4 @@ export * from './ProductCard';
 export * from './ProductModal';
 export * from './Input';
 export * from './CartProductModal';
+export * from './UserSettingsDropMenu';

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCart from '../assets/images/ShoppingCart.png';
 import { clearCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import { logoutUser } from '../redux/user';
 import { User } from '../types';
+import { UserSettingsDropMenu } from './UserSettingsDropMenu';
 
 const Header = () => {
 	const dispatch = useAppDispatch();
@@ -13,8 +14,18 @@ const Header = () => {
 	const isUserLoggedIn: boolean = useAppSelector(
 		state => state.user.isUserLoggedIn,
 	);
+	const user: User = useAppSelector(state => state.user.user);
+	const [isOpen, setOpen] = useState(false);
 
-	const onPressLogOutUser = () => {
+	const onPressHandleDropDown = (): void => {
+		setOpen(!isOpen);
+	};
+
+	const onPressOpenSettings = (): void => {};
+
+	const onPressOpenProfile = (): void => {};
+	
+	const onPressLogOutUser = (): void => {
 		dispatch(clearCartItems());
 		dispatch(logoutUser());
 		navigate('/');
@@ -48,11 +59,16 @@ const Header = () => {
 					}}
 				/>
 				{isUserLoggedIn ? (
-					<label
-						onClick={onPressLogOutUser}
-						className={headerStyles.logOut}>
-						Sign Out
-					</label>
+					<div className={headerStyles.menuContainer}>
+						<UserSettingsDropMenu
+							onPressHandleDropDown={onPressHandleDropDown}
+							isOpen={isOpen}
+							onPressLogOut={onPressLogOutUser}
+							userData={user}
+							onPressProfile={onPressOpenProfile}
+							onPressSettings={onPressOpenSettings}
+						/>
+					</div>
 				) : (
 					<label
 						onClick={() => navigate('/login')}
@@ -71,9 +87,9 @@ const headerStyles = {
 	btnContainer: 'pt-3.5 justify-center flex-1',
 	productBtn:
 		'text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br dark:focus:ring-green-800 font-medium rounded-sm text-sm px-4 py-2.5 text-center',
-	image: 'w-8 h-8 m-4 cursor-pointer',
-	login: 'mt-4 mr-2 font-medium text-blue-600 hover:underline cursor-pointer',
-	logOut: 'mt-4 mr-2 font-medium hover:underline cursor-pointer',
+	image: 'w-8 h-8 my-4 cursor-pointer',
+	login: 'mt-4 mr-4 ml-2 font-medium text-blue-600 hover:underline cursor-pointer',
+	menuContainer: 'pt-3.5 mr-4',
 };
 
 export { Header };
