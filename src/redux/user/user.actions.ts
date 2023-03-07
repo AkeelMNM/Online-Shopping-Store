@@ -66,7 +66,7 @@ export const updateUser = (id: string, user: User) => {
 
 			dispatch({
 				type: UPDATE_USER_SUCCESS,
-				payload: user,
+				payload: { _id: id, user: user },
 			});
 		} catch (error) {
 			console.log(error);

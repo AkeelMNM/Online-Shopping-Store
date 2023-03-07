@@ -66,6 +66,7 @@ const Register = () => {
 			const hashedPassword: string = await hashUserPassword(password);
 
 			const user: User = {
+				_id: '',
 				fullName: fullName,
 				email: email,
 				isActive: true,
@@ -86,7 +87,9 @@ const Register = () => {
 						className={registerStyles.input}
 						value={fullName}
 						placeholder="Full Name"
-						onChange={event => setFullName(event.target.value)}
+						onChange={event =>
+							setFullName(event.target.value.trim())
+						}
 					/>
 					{fullNameErr && (
 						<span className={registerStyles.errorText}>

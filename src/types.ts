@@ -49,7 +49,7 @@ export type ContentType = {
 };
 
 export type User = {
-	_id?: string;
+	_id: string;
 	fullName: string;
 	email: string;
 	password: string;
@@ -61,4 +61,10 @@ export type Login = {
 	isActive: boolean;
 	isVerified: boolean;
 	jwtToken: string;
+	message: string;
+};
+
+export type PasswordStatus = {
+	IsPasswordNotSame: boolean;
+	message: string;
 };

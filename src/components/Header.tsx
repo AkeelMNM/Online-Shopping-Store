@@ -4,6 +4,7 @@ import ShoppingCart from '../assets/images/ShoppingCart.png';
 import { clearCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import { logoutUser } from '../redux/user';
+import { logOut } from '../services/UserService';
 import { User } from '../types';
 import { UserSettingsDropMenu } from './UserSettingsDropMenu';
 
@@ -23,11 +24,16 @@ const Header = () => {
 
 	const onPressOpenSettings = (): void => {};
 
-	const onPressOpenProfile = (): void => {};
-	
-	const onPressLogOutUser = (): void => {
+	const onPressOpenProfile = (): void => {
+		navigate('/updateProfile');
+		onPressHandleDropDown();
+	};
+
+	const onPressLogOutUser = async (): Promise<void> => {
+		await logOut();
 		dispatch(clearCartItems());
 		dispatch(logoutUser());
+		onPressHandleDropDown();
 		navigate('/');
 	};
 
