@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
-import { CartProductModal, Input } from '../components';
+import { CartProductModal, HeaderFooter, Input } from '../components';
 import { fetchUsersCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
@@ -175,143 +175,147 @@ const ShoppingCart = () => {
 
 	if (cart.length <= 0) {
 		return (
-			<div className={cartStyles.container}>
-				<div className={cartStyles.textContainer}>
-					<label className={cartStyles.cartNotItemText}>
-						You don't have any items in your cart.
-					</label>
-				</div>
-				{!isUserLoggedIn ? (
-					<>
-						<label className={cartStyles.cartLoginText}>
-							Have an account? Sign in to see your items.
+			<HeaderFooter>
+				<div className={cartStyles.container}>
+					<div className={cartStyles.textContainer}>
+						<label className={cartStyles.cartNotItemText}>
+							You don't have any items in your cart.
 						</label>
-						<div className={cartStyles.buttonContainer}>
-							<button
-								className={cartStyles.signInButton}
-								onClick={() => navigate('/login')}>
-								Sign In
-							</button>
-							<button
-								className={cartStyles.registerButton}
-								onClick={() => navigate('/register')}>
-								Register
-							</button>
-						</div>
-					</>
-				) : (
-					<button
-						className={cartStyles.registerButton}
-						onClick={() => navigate('/products')}>
-						Browse Products
-					</button>
-				)}
-			</div>
+					</div>
+					{!isUserLoggedIn ? (
+						<>
+							<label className={cartStyles.cartLoginText}>
+								Have an account? Sign in to see your items.
+							</label>
+							<div className={cartStyles.buttonContainer}>
+								<button
+									className={cartStyles.signInButton}
+									onClick={() => navigate('/login')}>
+									Sign In
+								</button>
+								<button
+									className={cartStyles.registerButton}
+									onClick={() => navigate('/register')}>
+									Register
+								</button>
+							</div>
+						</>
+					) : (
+						<button
+							className={cartStyles.registerButton}
+							onClick={() => navigate('/products')}>
+							Browse Products
+						</button>
+					)}
+				</div>
+			</HeaderFooter>
 		);
 	} else {
 		return (
-			<div className={cartStyles.mainContainer}>
-				<div className={cartStyles.productContainer}>
-					<div className={cartStyles.itemCountContainer}>
-						<label className={cartStyles.itemCountText}>
-							Item: {cart.length}
-						</label>
-						<img
-							src={FreeDelivery}
-							className={cartStyles.freeimage}
-						/>
+			<HeaderFooter>
+				<div className={cartStyles.mainContainer}>
+					<div className={cartStyles.productContainer}>
+						<div className={cartStyles.itemCountContainer}>
+							<label className={cartStyles.itemCountText}>
+								Item: {cart.length}
+							</label>
+							<img
+								src={FreeDelivery}
+								className={cartStyles.freeimage}
+							/>
+						</div>
+						{cart &&
+							cart.map((item, index) => {
+								return (
+									<Cart
+										key={index}
+										color={_.get(item, 'color', '')}
+										image={_.get(item, 'image', '')}
+										//isFreeShipping={item.isFreeShipping}
+										quantity={_.get(item, 'quantity', 0)}
+										size={_.get(item, 'size', '')}
+										title={_.get(item, 'title', '')}
+										price={_.get(item, 'price', 0)}
+										onPressEdit={() =>
+											onPressUpdateCart(
+												item.productId,
+												_.get(item, '_id', ''),
+											)
+										}
+									/>
+								);
+							})}
+						<div className={cartStyles.itemCountContainer}>
+							<label className={cartStyles.itemCountText}>
+								Total
+							</label>
+							<label
+								className={
+									cartStyles.itemCountText
+								}>{`$${totalCost}`}</label>
+						</div>
 					</div>
-					{cart &&
-						cart.map((item, index) => {
-							return (
-								<Cart
-									key={index}
-									color={_.get(item, 'color', '')}
-									image={_.get(item, 'image', '')}
-									//isFreeShipping={item.isFreeShipping}
-									quantity={_.get(item, 'quantity', 0)}
-									size={_.get(item, 'size', '')}
-									title={_.get(item, 'title', '')}
-									price={_.get(item, 'price', 0)}
-									onPressEdit={() =>
-										onPressUpdateCart(
-											item.productId,
-											_.get(item, '_id', ''),
-										)
-									}
-								/>
-							);
-						})}
-					<div className={cartStyles.itemCountContainer}>
-						<label className={cartStyles.itemCountText}>
-							Total
+					<div className={cartStyles.formContainer}>
+						<label className={cartStyles.billText}>
+							Billing Information
 						</label>
-						<label
-							className={
-								cartStyles.itemCountText
-							}>{`$${totalCost}`}</label>
+						<form className={cartStyles.form}>
+							<Input
+								name="fullName"
+								type="text"
+								value={formData.fullName}
+								onChangeInput={onChangeInput}
+								label="Complete Name (FirstName, LastName)"
+								error={fromError.fullNameErr}
+							/>
+							<Input
+								name="address"
+								type="text"
+								value={formData.address}
+								onChangeInput={onChangeInput}
+								label="Full Address"
+								error={fromError.addressErr}
+							/>
+							<Input
+								name="city"
+								type="text"
+								value={formData.city}
+								onChangeInput={onChangeInput}
+								label="City"
+								error={fromError.cityErr}
+							/>
+							<Input
+								name="province"
+								type="text"
+								value={formData.province}
+								onChangeInput={onChangeInput}
+								label="State/Province"
+								error={fromError.provinceErr}
+							/>
+							<Input
+								name="mobileNo"
+								type="text"
+								value={formData.mobileNo}
+								onChangeInput={onChangeInput}
+								label="Mobile #"
+								error={fromError.mobileNoErr}
+							/>
+							<input
+								type="submit"
+								onClick={onSubmitBill}
+								className={cartStyles.submitButton}
+								value="Complete Purchase"
+							/>
+						</form>
 					</div>
+					<CartProductModal
+						visible={modalVisibility}
+						productId={productId}
+						cartItemId={cartItemId}
+						onPressClose={() => setModalVisibility(false)}
+					/>
 				</div>
-				<div className={cartStyles.formContainer}>
-					<label className={cartStyles.billText}>
-						Billing Information
-					</label>
-					<form className={cartStyles.form}>
-						<Input
-							name="fullName"
-							type="text"
-							value={formData.fullName}
-							onChangeInput={onChangeInput}
-							label="Complete Name (FirstName, LastName)"
-							error={fromError.fullNameErr}
-						/>
-						<Input
-							name="address"
-							type="text"
-							value={formData.address}
-							onChangeInput={onChangeInput}
-							label="Full Address"
-							error={fromError.addressErr}
-						/>
-						<Input
-							name="city"
-							type="text"
-							value={formData.city}
-							onChangeInput={onChangeInput}
-							label="City"
-							error={fromError.cityErr}
-						/>
-						<Input
-							name="province"
-							type="text"
-							value={formData.province}
-							onChangeInput={onChangeInput}
-							label="State/Province"
-							error={fromError.provinceErr}
-						/>
-						<Input
-							name="mobileNo"
-							type="text"
-							value={formData.mobileNo}
-							onChangeInput={onChangeInput}
-							label="Mobile #"
-							error={fromError.mobileNoErr}
-						/>
-						<input
-							type="submit"
-							onClick={onSubmitBill}
-							className={cartStyles.submitButton}
-							value="Complete Purchase"
-						/>
-					</form>
-				</div>
-				<CartProductModal
-					visible={modalVisibility}
-					productId={productId}
-					cartItemId={cartItemId}
-					onPressClose={() => setModalVisibility(false)}
-				/>
-			</div>
+			</HeaderFooter>
 		);
 	}
 };
@@ -320,7 +324,7 @@ const cartStyles = {
 	mainContainer: 'flex flex-wrap h-full g-6',
 	productContainer: 'xl:ml-0 xl:w-1/2 lg:w-1/2 md:w-8/12 md:mb-0 p-2',
 	formContainer:
-		'w-full xl:ml-0 xl:w-1/2 lg:w-1/2 md:w-8/12 md:mb-0 p-2 lg:mb-[0.3rem]',
+		'w-full xl:ml-0 xl:w-1/2 lg:w-1/2 md:w-8/12 md:mb-0 p-2 xl:mb-[2.6rem]',
 	itemCountContainer:
 		'flex flex-row justify-between shadow-md rounded p-2 mb-4',
 	itemCountText: 'mt-4 pt-2 font-semibold',

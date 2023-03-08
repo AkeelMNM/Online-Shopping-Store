@@ -31,7 +31,7 @@ const Login = () => {
 				dispatch(fetchUser(login._id));
 				navigate('/home');
 			} else {
-				setLoginErr('Email or password is incorrect!!');
+				setLoginErr(login.message);
 			}
 		}
 	};
@@ -71,7 +71,7 @@ const Login = () => {
 									value={email}
 									onChange={event =>
 										onChangeEmailValidation(
-											event.target.value,
+											event.target.value.trim(),
 										)
 									}
 								/>
@@ -89,7 +89,7 @@ const Login = () => {
 									placeholder="Password"
 									value={password}
 									onChange={event =>
-										setPassword(event.target.value)
+										setPassword(event.target.value.trim())
 									}
 								/>
 								{passwordErr && (

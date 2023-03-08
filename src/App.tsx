@@ -5,7 +5,6 @@ import {
 	Route,
 	Navigate,
 } from 'react-router-dom';
-import { Footer, Header } from './components';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Products from './pages/Products';
@@ -16,7 +15,6 @@ import UpdateUserProfile from './pages/UpdateUserProfile';
 const App = () => {
 	return (
 		<Router>
-			<Header />
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/login" element={<Login />} />
@@ -26,7 +24,6 @@ const App = () => {
 				<Route path="/updateProfile" element={<UpdateUserProfile />} />
 				<Route path="*" element={<Navigate to={'/'} />} />
 			</Routes>
-			<Footer />
 		</Router>
 	);
 };

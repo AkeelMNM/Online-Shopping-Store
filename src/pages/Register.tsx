@@ -174,7 +174,7 @@ const registerStyles = {
 	container:
 		'container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2',
 	formContainer: 'bg-white px-6 py-8 rounded shadow-md text-black w-full',
-	title: 'mb-8 text-3xl text-center',
+	title: 'mb-8 text-2xl text-center',
 	input: 'block border border-grey-light w-full p-3 rounded mt-4',
 	button: 'text-white mt-4 bg-blue-600 hover:bg-blue-600 focus:ring-1 focus:outline-none focus:ring-blue-600 font-medium rounded-sm text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-600',
 	termsLabel: 'text-center text-sm text-grey-dark mt-4',

@@ -5,6 +5,7 @@ import { updateUser } from '../redux/user';
 import { PasswordStatus, User } from '../types';
 import { hashUserPassword } from '../utils/hashFunction';
 import { passwordValidation } from '../services/UserService';
+import { HeaderFooter } from '../components';
 
 const UpdateUserProfile = () => {
 	const dispatch = useAppDispatch();
@@ -115,113 +116,115 @@ const UpdateUserProfile = () => {
 	};
 
 	return (
-		<div className={updateUserProfileStyles.mainContainer}>
-			<div className={updateUserProfileStyles.container}>
-				<div className={updateUserProfileStyles.formContainer}>
-					<h1 className={updateUserProfileStyles.title}>
-						Update User Profile
-					</h1>
-					<div>
-						<input
-							type="text"
-							className={updateUserProfileStyles.input}
-							value={fullName}
-							placeholder="Full Name"
-							onChange={event =>
-								setFullName(event.target.value.trim())
-							}
-						/>
-						{fullNameErr && (
-							<span className={updateUserProfileStyles.errorText}>
-								{fullNameErr}
-							</span>
-						)}
-						<input
-							type="text"
-							className={updateUserProfileStyles.input}
-							value={email}
-							placeholder="Email"
-							onChange={event =>
-								onChangeEmailValidation(
-									event.target.value.trim(),
-								)
-							}
-						/>
-						{emailErr && (
-							<span className={updateUserProfileStyles.errorText}>
-								{emailErr}
-							</span>
-						)}
-						<button
-							type="submit"
-							className={updateUserProfileStyles.button}
-							onClick={onPressUpdateDetails}>
-							Update Details
-						</button>
-					</div>
-					<div>
-						<input
-							type="password"
-							className={updateUserProfileStyles.input}
-							value={oldPassword}
-							placeholder="Old Password"
-							onChange={event =>
-								setOldPassword(event.target.value.trim())
-							}
-						/>
-						{oldPasswordErr && (
-							<span className={updateUserProfileStyles.errorText}>
-								{oldPassword}
-							</span>
-						)}
-						<input
-							type="password"
-							className={updateUserProfileStyles.input}
-							value={newPassword}
-							placeholder="New Password"
-							onChange={event =>
-								onChangePasswordValidation(
-									event.target.value.trim(),
-								)
-							}
-						/>
-						{newPasswordErr && (
-							<span className={updateUserProfileStyles.errorText}>
-								{newPasswordErr}
-							</span>
-						)}
-						<input
-							type="password"
-							className={updateUserProfileStyles.input}
-							name="confirm_password"
-							placeholder="Confirm New Password"
-							onChange={event =>
-								checkReEnterPassword(event.target.value.trim())
-							}
-						/>
-						{newPasswordReErr && (
-							<span className={updateUserProfileStyles.errorText}>
-								{newPasswordReErr}
-							</span>
-						)}
-						<button
-							type="submit"
-							className={updateUserProfileStyles.button}
-							onClick={onPressUpdatePassword}>
-							Update Password
-						</button>
-						{errorMessage && (
-							<div
-								className={
-									updateUserProfileStyles.passwordErrorLabel
-								}>
-								{errorMessage}
-							</div>
-						)}
+		<HeaderFooter>
+			<div className={updateUserProfileStyles.mainContainer}>
+				<div className={updateUserProfileStyles.container}>
+					<div className={updateUserProfileStyles.formContainer}>
+						<h1 className={updateUserProfileStyles.title}>
+							Update User Profile
+						</h1>
+						<div>
+							<input
+								type="text"
+								className={updateUserProfileStyles.input}
+								value={fullName}
+								placeholder="Full Name"
+								onChange={event =>
+									setFullName(event.target.value.trim())
+								}
+							/>
+							{fullNameErr && (
+								<span className={updateUserProfileStyles.errorText}>
+									{fullNameErr}
+								</span>
+							)}
+							<input
+								type="text"
+								className={updateUserProfileStyles.input}
+								value={email}
+								placeholder="Email"
+								onChange={event =>
+									onChangeEmailValidation(
+										event.target.value.trim(),
+									)
+								}
+							/>
+							{emailErr && (
+								<span className={updateUserProfileStyles.errorText}>
+									{emailErr}
+								</span>
+							)}
+							<button
+								type="submit"
+								className={updateUserProfileStyles.button}
+								onClick={onPressUpdateDetails}>
+								Update Details
+							</button>
+						</div>
+						<div>
+							<input
+								type="password"
+								className={updateUserProfileStyles.input}
+								value={oldPassword}
+								placeholder="Old Password"
+								onChange={event =>
+									setOldPassword(event.target.value.trim())
+								}
+							/>
+							{oldPasswordErr && (
+								<span className={updateUserProfileStyles.errorText}>
+									{oldPassword}
+								</span>
+							)}
+							<input
+								type="password"
+								className={updateUserProfileStyles.input}
+								value={newPassword}
+								placeholder="New Password"
+								onChange={event =>
+									onChangePasswordValidation(
+										event.target.value.trim(),
+									)
+								}
+							/>
+							{newPasswordErr && (
+								<span className={updateUserProfileStyles.errorText}>
+									{newPasswordErr}
+								</span>
+							)}
+							<input
+								type="password"
+								className={updateUserProfileStyles.input}
+								name="confirm_password"
+								placeholder="Confirm New Password"
+								onChange={event =>
+									checkReEnterPassword(event.target.value.trim())
+								}
+							/>
+							{newPasswordReErr && (
+								<span className={updateUserProfileStyles.errorText}>
+									{newPasswordReErr}
+								</span>
+							)}
+							<button
+								type="submit"
+								className={updateUserProfileStyles.button}
+								onClick={onPressUpdatePassword}>
+								Update Password
+							</button>
+							{errorMessage && (
+								<div
+									className={
+										updateUserProfileStyles.passwordErrorLabel
+									}>
+									{errorMessage}
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</HeaderFooter>
 	);
 };
 
@@ -230,7 +233,7 @@ const updateUserProfileStyles = {
 	container:
 		'container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2',
 	formContainer: 'bg-white px-6 py-8 rounded shadow-md text-black w-full',
-	title: 'mb-8 text-3xl text-center',
+	title: 'mb-8 text-2xl text-center',
 	input: 'block border border-grey-light w-full p-3 rounded mt-4',
 	button: 'text-white mt-4 bg-blue-600 hover:bg-blue-600 focus:ring-1 focus:outline-none focus:ring-blue-600 font-medium rounded-sm text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-600',
 	errorText:
