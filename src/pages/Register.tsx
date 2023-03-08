@@ -183,7 +183,7 @@ const registerStyles = {
 	loginLink:
 		'text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out',
 	errorText:
-		'block mb-2 ml-1 text-xs font-medium text-red-700 dark:text-red-500 mt-1 mb-4 italic',
+		'block mb-2 ml-1 text-sm font-medium text-red-700 dark:text-red-500 mt-1 mb-4 italic',
 };
 
 export default Register;

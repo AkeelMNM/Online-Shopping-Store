@@ -243,7 +243,7 @@ const loginStyles = {
 		'inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1',
 	signInOptionImage: 'w-4 h-4',
 	errorText:
-		'block mb-2 text-xs font-medium text-red-700 dark:text-red-500 mt-1 italic',
+		'block mb-2 text-sm font-medium text-red-700 dark:text-red-500 mt-1 italic',
 	loginError:
 		'block mb-4 text-lg font-medium text-red-700 dark:text-red-500 italic',
 };
