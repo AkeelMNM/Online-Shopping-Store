@@ -1,6 +1,6 @@
 import { Invoice } from '../types';
 
-const API_NAME: string = process.env.API_ADDRESS || '';
+const API_NAME: string = process.env.REACT_APP_API_ADDRESS || '';
 
 export const makePayment = async (invoice: Invoice): Promise<string> => {
 	try {

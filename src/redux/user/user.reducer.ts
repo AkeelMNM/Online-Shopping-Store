@@ -21,6 +21,7 @@ const initialState = {
 		_id: '',
 		fullName: '',
 		email: '',
+		isActive: false,
 	},
 	isUserFetching: false,
 	isUserAdding: false,
@@ -74,7 +75,11 @@ export const userReducer = (state = initialState, action: AnyAction) => {
 		case UPDATE_USER_SUCCESS:
 			return {
 				...state,
-				user: action.payload,
+				user: {
+					...action.payload.user,
+					_id: action.payload._id,
+					password: '',
+				},
 				isUpdatingUser: false,
 			};
 		case UPDATE_USER_ERROR:

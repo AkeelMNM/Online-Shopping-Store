@@ -1,6 +1,6 @@
-import { User, Login } from '../types';
+import { User, Login, PasswordStatus } from '../types';
 
-const API_NAME: string = process.env.USER_API_ADDRESS || '';
+const API_NAME: string = process.env.REACT_APP_USER_API_ADDRESS || '';
 
 export const loginUser = async (
 	email: string,
@@ -15,6 +15,30 @@ export const loginUser = async (
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ email, password }),
+		});
+
+		const responseData = await response.json();
+
+		return responseData || {};
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+export const passwordValidation = async (
+	oldPassword: string,
+	newPassword: string,
+): Promise<PasswordStatus> => {
+	try {
+		const response = await fetch(`${API_NAME}/user/validate`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ oldPassword, newPassword }),
 		});
 
 		const responseData = await response.json();
@@ -95,6 +119,19 @@ export const removeUser = async (id: string): Promise<void> => {
 		const responseData = await response.json();
 
 		return responseData || {};
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+export const logOut = async (): Promise<void> => {
+	try {
+		const response = await fetch(`${API_NAME}/user/logout`, {
+			method: 'GET',
+		});
+
+		console.log(response);
 	} catch (error) {
 		console.error(error);
 		throw error;

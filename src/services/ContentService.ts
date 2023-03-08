@@ -1,6 +1,6 @@
 import { Content } from '../types';
 
-const API_NAME: string = process.env.API_ADDRESS || '';
+const API_NAME: string = process.env.REACT_APP_API_ADDRESS || '';
 
 export const fetchContent = async (): Promise<Array<Content>> => {
 	try {
