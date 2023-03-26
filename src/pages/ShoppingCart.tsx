@@ -346,7 +346,7 @@ const cartStyles = {
 	signInButton:
 		'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
 	registerButton:
-		'bg-transparent hover:bg-slate-100 hover:text-blue-600 hover:border-blue-400 text-blue-700 font-semibold hover:text-white py-2.5 ml-2 px-10 border border-blue-500 rounded-lg hover:border-transparent',
+		'bg-transparent hover:bg-blue-100 hover:text-blue-700 hover:border-blue-500 text-blue-700 font-semibold hover:text-blue-700 py-2.5 ml-2 px-10 border border-blue-500 rounded-lg hover:border-blue-500',
 	cartNotItemText: 'text-2xl dark:black',
 	cartLoginText: 'text-lg dark:black',
 	buttonContainer: 'flex flex-row mt-4 mb-4',

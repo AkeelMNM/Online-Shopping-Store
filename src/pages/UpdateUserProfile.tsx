@@ -21,6 +21,8 @@ const UpdateUserProfile = () => {
 	const [fullNameErr, setFullNameErr] = useState('');
 	const [newPasswordReErr, setNewPasswordReErr] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+	const [updateCompleteMgs, setUpdateCompleteMgs] = useState('');
+	const [passwordChangeMsg, setPasswordChangeMsg] = useState('');
 
 	useEffect(() => {
 		setEmail(user.email);
@@ -81,6 +83,7 @@ const UpdateUserProfile = () => {
 			};
 
 			dispatch(updateUser(user._id, updatedUser));
+			setUpdateCompleteMgs('User profile updated!.');
 		}
 	};
 
@@ -109,6 +112,7 @@ const UpdateUserProfile = () => {
 				};
 				dispatch(updateUser(user._id, updatedUser));
 				setErrorMessage('');
+				setPasswordChangeMsg('User password updated!.');
 			} else {
 				setErrorMessage(response.message);
 			}
@@ -152,6 +156,11 @@ const UpdateUserProfile = () => {
 							{emailErr && (
 								<span className={updateUserProfileStyles.errorText}>
 									{emailErr}
+								</span>
+							)}
+							{updateCompleteMgs && (
+								<span className={updateUserProfileStyles.completeLabel}>
+									{updateCompleteMgs}
 								</span>
 							)}
 							<button
@@ -206,6 +215,11 @@ const UpdateUserProfile = () => {
 									{newPasswordReErr}
 								</span>
 							)}
+							{passwordChangeMsg && (
+								<span className={updateUserProfileStyles.completeLabel}>
+									{passwordChangeMsg}
+								</span>
+							)}
 							<button
 								type="submit"
 								className={updateUserProfileStyles.button}
@@ -240,6 +254,8 @@ const updateUserProfileStyles = {
 		'block mb-2 ml-1 text-xs font-medium text-red-700 dark:text-red-500 mt-1 mb-4 italic',
 	passwordErrorLabel:
 		'block mb-2 ml-1 text-sm font-medium text-red-700 dark:text-red-500 mt-1 mb-4 ',
+	completeLabel:
+		'block mb-2 ml-1 text-sm font-medium text-green-700 dark:text-green-500 mt-2 mb-2 italic',
 };
 
 export default UpdateUserProfile;

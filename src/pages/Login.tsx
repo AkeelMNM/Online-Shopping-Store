@@ -98,6 +98,11 @@ const Login = () => {
 									</span>
 								)}
 							</div>
+							{loginErr && (
+								<span className={loginStyles.loginError}>
+									{loginErr}
+								</span>
+							)}
 							<div className={loginStyles.rememberMeContainer}>
 								<div
 									className={
@@ -122,11 +127,6 @@ const Login = () => {
 								</a>
 							</div>
 							<div className={loginStyles.buttonContainer}>
-								{loginErr && (
-									<span className={loginStyles.loginError}>
-										{loginErr}
-									</span>
-								)}
 								<button
 									type="button"
 									onClick={onPressLogin}
@@ -245,7 +245,7 @@ const loginStyles = {
 	errorText:
 		'block mb-2 text-sm font-medium text-red-700 dark:text-red-500 mt-1 italic',
 	loginError:
-		'block mb-4 text-lg font-medium text-red-700 dark:text-red-500 italic',
+		'block mb-4 font-medium text-red-700 dark:text-red-500 italic',
 };
 
 export default Login;

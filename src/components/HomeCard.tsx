@@ -9,7 +9,7 @@ type HomeCardProps = {
 const HomeCard = ({ image, title, description }: HomeCardProps) => {
 	return (
 		<div className={homeCardStyles.mainContainer}>
-			<img className={homeCardStyles.image} src={image} alt={title} />
+			<img className={homeCardStyles.image} src={image} alt={title} crossOrigin="anonymous" />
 			<div className={homeCardStyles.container}>
 				<h5 className={homeCardStyles.title}>{title}</h5>
 				<p className={homeCardStyles.desc}>{description}</p>
