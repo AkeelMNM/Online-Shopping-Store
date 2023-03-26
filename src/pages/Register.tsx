@@ -159,7 +159,7 @@ const Register = () => {
 				</div>
 				<div className={registerStyles.loginLabel}>
 					Already have an account?{' '}
-					<a className={registerStyles.loginLink} href="/">
+					<a className={registerStyles.loginLink} href="/login">
 						Log in
 					</a>
 					.
