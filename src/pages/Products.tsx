@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox, HeaderFooter, ProductCard, ProductModal } from '../components';
+import {
+	Checkbox,
+	HeaderFooter,
+	ProductCard,
+	ProductModal,
+} from '../components';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import _ from 'lodash';
 import { Product } from '../types';

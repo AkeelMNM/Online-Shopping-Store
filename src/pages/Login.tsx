@@ -244,8 +244,7 @@ const loginStyles = {
 	signInOptionImage: 'w-4 h-4',
 	errorText:
 		'block mb-2 text-sm font-medium text-red-700 dark:text-red-500 mt-1 italic',
-	loginError:
-		'block mb-4 font-medium text-red-700 dark:text-red-500 italic',
+	loginError: 'block mb-4 font-medium text-red-700 dark:text-red-500 italic',
 };
 
 export default Login;

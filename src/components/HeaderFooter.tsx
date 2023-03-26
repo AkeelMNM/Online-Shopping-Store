@@ -34,6 +34,11 @@ const Header = ({ navigate }: HeaderProps) => {
 
 	const onPressOpenSettings = (): void => {};
 
+	const onPressPurchasedItems = (): void => {
+		navigate('/purchasedItems');
+		onPressHandleDropDown();
+	};
+
 	const onPressOpenProfile = (): void => {
 		navigate('/updateProfile');
 		onPressHandleDropDown();
@@ -80,6 +85,7 @@ const Header = ({ navigate }: HeaderProps) => {
 						userData={user}
 						onPressProfile={onPressOpenProfile}
 						onPressSettings={onPressOpenSettings}
+						onPressPurchased={onPressPurchasedItems}
 					/>
 				</div>
 			) : (

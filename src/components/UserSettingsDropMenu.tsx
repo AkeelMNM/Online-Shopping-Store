@@ -9,6 +9,7 @@ type UserSettingsDropMenuProps = {
 	userData: User;
 	onPressSettings: () => void;
 	onPressProfile: () => void;
+	onPressPurchased: () => void;
 };
 
 const UserSettingsDropMenu = ({
@@ -18,6 +19,7 @@ const UserSettingsDropMenu = ({
 	userData,
 	onPressSettings,
 	onPressProfile,
+	onPressPurchased,
 }: UserSettingsDropMenuProps) => {
 	return (
 		<div className={settingsStyles.mainContainer}>
@@ -47,6 +49,13 @@ const UserSettingsDropMenu = ({
 							onClick={onPressProfile}
 							className={settingsStyles.listText}>
 							Profile
+						</a>
+					</li>
+					<li>
+						<a
+							onClick={onPressPurchased}
+							className={settingsStyles.listText}>
+							My Purchase
 						</a>
 					</li>
 					<li>

@@ -66,6 +66,7 @@ const ProductModal = ({
 				price: parseInt(variant.price.replace(/\D/g, '')),
 				isFreeShipping: false,
 				image: variant.image,
+				isPaymentComplete: false,
 			};
 
 			dispatch(addItemToCart(cartItem));

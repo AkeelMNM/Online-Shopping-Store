@@ -28,6 +28,7 @@ export type CartItem = {
 	price: number;
 	isFreeShipping: boolean;
 	image: string;
+	isPaymentComplete: boolean;
 };
 
 export type Invoice = {

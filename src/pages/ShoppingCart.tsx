@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
-import { CartProductModal, HeaderFooter, Input } from '../components';
+import { CartProductModal, HeaderFooter, Input, Cart } from '../components';
 import { fetchUsersCartItems } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
@@ -24,48 +24,6 @@ const ERROR_INITIAL_STATE = {
 	mobileNoErr: '',
 };
 
-type CartProps = {
-	title: string;
-	size: string;
-	color: string;
-	quantity: number;
-	price: number;
-	image: string;
-	onPressEdit: () => void;
-};
-
-const Cart = ({
-	title,
-	size,
-	color,
-	quantity,
-	price,
-	image,
-	onPressEdit,
-}: CartProps) => {
-	return (
-		<div className={cartStyles.itemContainer}>
-			<img
-				src={image}
-				crossOrigin="anonymous"
-				className={cartStyles.itemImage}
-			/>
-			<div className={cartStyles.itemDescContainer}>
-				<label className={cartStyles.titleText}>{title}</label>
-				<label>{size}</label>
-				<label>{color}</label>
-			</div>
-			<label className={cartStyles.itemText}>Qty: {quantity}</label>
-			<label className={cartStyles.itemText}>
-				SubTotal: {price * quantity}
-			</label>
-			<button className={cartStyles.editButton} onClick={onPressEdit}>
-				Edit
-			</button>
-		</div>
-	);
-};
-
 const ShoppingCart = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
@@ -73,7 +31,11 @@ const ShoppingCart = () => {
 	const isUserLoggedIn: boolean = useAppSelector(
 		state => state.user.isUserLoggedIn,
 	);
-	const cart: CartItem[] = useAppSelector(state => state.cart.cart);
+	const cart: CartItem[] = useAppSelector(state => {
+		return state.cart.cart.filter((item: CartItem) => {
+			return !item.isPaymentComplete;
+		});
+	});
 	const [formData, setFormData] = useState<Invoice>(INITIAL_STATE);
 	const [fromError, setFormError] = useState(ERROR_INITIAL_STATE);
 	const [modalVisibility, setModalVisibility] = useState(false);
@@ -93,7 +55,7 @@ const ShoppingCart = () => {
 		let cost: number = 0;
 		cart.map(item => (cost = +item.price * item.quantity));
 		setTotalCost(cost);
-	}, [cart]);
+	}, [modalVisibility]);
 
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		e.preventDefault();
@@ -176,25 +138,27 @@ const ShoppingCart = () => {
 	if (cart.length <= 0) {
 		return (
 			<HeaderFooter>
-				<div className={cartStyles.container}>
-					<div className={cartStyles.textContainer}>
-						<label className={cartStyles.cartNotItemText}>
+				<div className={shoppingCartStyles.container}>
+					<div className={shoppingCartStyles.textContainer}>
+						<label className={shoppingCartStyles.cartNotItemText}>
 							You don't have any items in your cart.
 						</label>
 					</div>
 					{!isUserLoggedIn ? (
 						<>
-							<label className={cartStyles.cartLoginText}>
+							<label className={shoppingCartStyles.cartLoginText}>
 								Have an account? Sign in to see your items.
 							</label>
-							<div className={cartStyles.buttonContainer}>
+							<div className={shoppingCartStyles.buttonContainer}>
 								<button
-									className={cartStyles.signInButton}
+									className={shoppingCartStyles.signInButton}
 									onClick={() => navigate('/login')}>
 									Sign In
 								</button>
 								<button
-									className={cartStyles.registerButton}
+									className={
+										shoppingCartStyles.registerButton
+									}
 									onClick={() => navigate('/register')}>
 									Register
 								</button>
@@ -202,7 +166,7 @@ const ShoppingCart = () => {
 						</>
 					) : (
 						<button
-							className={cartStyles.registerButton}
+							className={shoppingCartStyles.registerButton}
 							onClick={() => navigate('/products')}>
 							Browse Products
 						</button>
@@ -213,15 +177,15 @@ const ShoppingCart = () => {
 	} else {
 		return (
 			<HeaderFooter>
-				<div className={cartStyles.mainContainer}>
-					<div className={cartStyles.productContainer}>
-						<div className={cartStyles.itemCountContainer}>
-							<label className={cartStyles.itemCountText}>
+				<div className={shoppingCartStyles.mainContainer}>
+					<div className={shoppingCartStyles.productContainer}>
+						<div className={shoppingCartStyles.itemCountContainer}>
+							<label className={shoppingCartStyles.itemCountText}>
 								Item: {cart.length}
 							</label>
 							<img
 								src={FreeDelivery}
-								className={cartStyles.freeimage}
+								className={shoppingCartStyles.freeimage}
 							/>
 						</div>
 						{cart &&
@@ -245,21 +209,21 @@ const ShoppingCart = () => {
 									/>
 								);
 							})}
-						<div className={cartStyles.itemCountContainer}>
-							<label className={cartStyles.itemCountText}>
+						<div className={shoppingCartStyles.itemCountContainer}>
+							<label className={shoppingCartStyles.itemCountText}>
 								Total
 							</label>
 							<label
 								className={
-									cartStyles.itemCountText
+									shoppingCartStyles.itemCountText
 								}>{`$${totalCost}`}</label>
 						</div>
 					</div>
-					<div className={cartStyles.formContainer}>
-						<label className={cartStyles.billText}>
+					<div className={shoppingCartStyles.formContainer}>
+						<label className={shoppingCartStyles.billText}>
 							Billing Information
 						</label>
-						<form className={cartStyles.form}>
+						<form className={shoppingCartStyles.form}>
 							<Input
 								name="fullName"
 								type="text"
@@ -303,7 +267,7 @@ const ShoppingCart = () => {
 							<input
 								type="submit"
 								onClick={onSubmitBill}
-								className={cartStyles.submitButton}
+								className={shoppingCartStyles.submitButton}
 								value="Complete Purchase"
 							/>
 						</form>
@@ -320,7 +284,7 @@ const ShoppingCart = () => {
 	}
 };
 
-const cartStyles = {
+const shoppingCartStyles = {
 	mainContainer: 'flex flex-wrap h-full g-6',
 	productContainer: 'xl:ml-0 xl:w-1/2 lg:w-1/2 md:w-8/12 md:mb-0 p-2',
 	formContainer:
@@ -329,17 +293,10 @@ const cartStyles = {
 		'flex flex-row justify-between shadow-md rounded p-2 mb-4',
 	itemCountText: 'mt-4 pt-2 font-semibold',
 	freeimage: 'w-30 h-20',
-	itemContainer: 'grid grid-cols-6 shadow-md rounded p-4 items-center',
-	itemDescContainer: 'flex flex-col pl-4 col-span-2',
-	titleText: 'text-gray-900 w-full text-lg title-font font-medium mb-1',
-	itemText: 'justify-self-center',
-	itemImage: 'w-28 h-40 justify-self-center',
 	billText: 'text-2xl font-bold',
 	form: 'mt-4',
 	submitButton:
 		'text-white bg-blue-600 hover:bg-blue-600 focus:ring-1 focus:outline-none focus:ring-blue-600 font-medium rounded-sm text-sm w-full px-5 mb-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-600',
-	editButton:
-		'inline-block px-4 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out',
 	container:
 		'container max-w-lg mx-auto flex flex-col h-screen items-center justify-center px-2',
 	textContainer: 'text-center mt-4 mb-2',

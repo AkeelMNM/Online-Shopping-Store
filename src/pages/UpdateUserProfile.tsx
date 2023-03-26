@@ -138,7 +138,10 @@ const UpdateUserProfile = () => {
 								}
 							/>
 							{fullNameErr && (
-								<span className={updateUserProfileStyles.errorText}>
+								<span
+									className={
+										updateUserProfileStyles.errorText
+									}>
 									{fullNameErr}
 								</span>
 							)}
@@ -154,12 +157,18 @@ const UpdateUserProfile = () => {
 								}
 							/>
 							{emailErr && (
-								<span className={updateUserProfileStyles.errorText}>
+								<span
+									className={
+										updateUserProfileStyles.errorText
+									}>
 									{emailErr}
 								</span>
 							)}
 							{updateCompleteMgs && (
-								<span className={updateUserProfileStyles.completeLabel}>
+								<span
+									className={
+										updateUserProfileStyles.completeLabel
+									}>
 									{updateCompleteMgs}
 								</span>
 							)}
@@ -181,7 +190,10 @@ const UpdateUserProfile = () => {
 								}
 							/>
 							{oldPasswordErr && (
-								<span className={updateUserProfileStyles.errorText}>
+								<span
+									className={
+										updateUserProfileStyles.errorText
+									}>
 									{oldPassword}
 								</span>
 							)}
@@ -197,7 +209,10 @@ const UpdateUserProfile = () => {
 								}
 							/>
 							{newPasswordErr && (
-								<span className={updateUserProfileStyles.errorText}>
+								<span
+									className={
+										updateUserProfileStyles.errorText
+									}>
 									{newPasswordErr}
 								</span>
 							)}
@@ -207,16 +222,24 @@ const UpdateUserProfile = () => {
 								name="confirm_password"
 								placeholder="Confirm New Password"
 								onChange={event =>
-									checkReEnterPassword(event.target.value.trim())
+									checkReEnterPassword(
+										event.target.value.trim(),
+									)
 								}
 							/>
 							{newPasswordReErr && (
-								<span className={updateUserProfileStyles.errorText}>
+								<span
+									className={
+										updateUserProfileStyles.errorText
+									}>
 									{newPasswordReErr}
 								</span>
 							)}
 							{passwordChangeMsg && (
-								<span className={updateUserProfileStyles.completeLabel}>
+								<span
+									className={
+										updateUserProfileStyles.completeLabel
+									}>
 									{passwordChangeMsg}
 								</span>
 							)}
