@@ -8,6 +8,7 @@ type CartProps = {
 	price: number;
 	image: string;
 	onPressEdit: () => void;
+	enableEdit: boolean;
 };
 
 const Cart = ({
@@ -18,9 +19,13 @@ const Cart = ({
 	price,
 	image,
 	onPressEdit,
+	enableEdit = true,
 }: CartProps) => {
 	return (
-		<div className={cartStyles.itemContainer}>
+		<div
+			className={`${cartStyles.itemContainer} ${
+				enableEdit ? 'grid-cols-6' : 'grid-cols-5'
+			}`}>
 			<img
 				src={image}
 				crossOrigin="anonymous"
@@ -35,15 +40,19 @@ const Cart = ({
 			<label className={cartStyles.itemText}>
 				SubTotal: {price * quantity}
 			</label>
-			<button className={cartStyles.editButton} onClick={onPressEdit}>
-				Edit
-			</button>
+			{enableEdit ? (
+				<button className={cartStyles.editButton} onClick={onPressEdit}>
+					Edit
+				</button>
+			) : (
+				<></>
+			)}
 		</div>
 	);
 };
 
 const cartStyles = {
-	itemContainer: 'grid grid-cols-6 shadow-md rounded p-4 items-center',
+	itemContainer: 'grid shadow-md rounded p-4 items-center',
 	itemDescContainer: 'flex flex-col pl-4 col-span-2',
 	titleText: 'text-gray-900 w-full text-lg title-font font-medium mb-1',
 	itemText: 'justify-self-center',

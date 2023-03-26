@@ -206,6 +206,7 @@ const ShoppingCart = () => {
 												_.get(item, '_id', ''),
 											)
 										}
+										enableEdit={true}
 									/>
 								);
 							})}
