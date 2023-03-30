@@ -13,6 +13,9 @@ import {
 	DELETE_CART_ITEM_REQUEST,
 	DELETE_CART_ITEM_SUCCESS,
 	DELETE_CART_ITEM_ERROR,
+	UPDATE_CART_PAYMENT_STATUS_ERROR,
+	UPDATE_CART_PAYMENT_STATUS_REQUEST,
+	UPDATE_CART_PAYMENT_STATUS_SUCCESS,
 } from './cart.types';
 import { CartItem } from '../../types';
 
@@ -22,6 +25,7 @@ const initialState = {
 	isAddingItemToCart: false,
 	isCartItemUpdating: false,
 	isCartItemRemoving: false,
+	isCartPaymentStatusUpdating: false,
 };
 
 export const cartReducer = (state = initialState, action: AnyAction) => {
@@ -93,6 +97,27 @@ export const cartReducer = (state = initialState, action: AnyAction) => {
 			return {
 				...state,
 				isCartItemRemoving: false,
+			};
+		case UPDATE_CART_PAYMENT_STATUS_REQUEST:
+			return {
+				...state,
+				isCartPaymentStatusUpdating: true,
+			};
+		case UPDATE_CART_PAYMENT_STATUS_SUCCESS:
+			console.log(action.payload);
+			return {
+				...state,
+				cart: state.cart.map(item =>
+					action.payload.includes(item._id)
+						? { ...item, isPaymentComplete: true }
+						: item,
+				),
+				isCartPaymentStatusUpdating: false,
+			};
+		case UPDATE_CART_PAYMENT_STATUS_ERROR:
+			return {
+				...state,
+				isCartPaymentStatusUpdating: false,
 			};
 		default:
 			return state;

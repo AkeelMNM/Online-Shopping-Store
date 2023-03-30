@@ -3,12 +3,13 @@ import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import FreeDelivery from '../assets/images/FreeDelivery.png';
 import { CartProductModal, HeaderFooter, Input, Cart } from '../components';
-import { fetchUsersCartItems } from '../redux/cart';
+import { fetchUsersCartItems, updateCartPaymentStatus } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
-import { CartItem, Invoice, User } from '../types';
+import { ApiResponse, CartItem, Invoice, User } from '../types';
 
 const INITIAL_STATE: Invoice = {
+	userId: '',
 	fullName: '',
 	address: '',
 	city: '',
@@ -41,21 +42,21 @@ const ShoppingCart = () => {
 	const [modalVisibility, setModalVisibility] = useState(false);
 	const [productId, setProductId] = useState('');
 	const [cartItemId, setCartItemId] = useState('');
-	const [totalCost, setTotalCost] = useState(0);
 
 	useEffect(() => {
 		if (isUserLoggedIn) {
 			dispatch(fetchUsersCartItems(_.get(user, '_id', '')));
+			setFormData({ ...formData, userId: user._id });
 		} else {
 			console.log('no user login');
 		}
 	}, []);
 
-	useEffect(() => {
+	const calculateTotalCost = (): number => {
 		let cost: number = 0;
-		cart.map(item => (cost = +item.price * item.quantity));
-		setTotalCost(cost);
-	}, [modalVisibility]);
+		cart.map(item => (cost += item.price * item.quantity));
+		return cost;
+	};
 
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		e.preventDefault();
@@ -129,9 +130,20 @@ const ShoppingCart = () => {
 	): Promise<void> => {
 		e.preventDefault();
 		if (validateInputFields()) {
-			const response = await PaymentService.makePayment(formData);
-			setFormData(INITIAL_STATE);
-			setFormError(ERROR_INITIAL_STATE);
+			const response: ApiResponse = await PaymentService.makePayment(
+				formData,
+			);
+			if (response.status === 200) {
+				const itemIds: (string | undefined)[] = _.map(
+					cart,
+					item => item._id,
+				);
+				dispatch(updateCartPaymentStatus(itemIds));
+				setFormData(INITIAL_STATE);
+				setFormError(ERROR_INITIAL_STATE);
+			} else {
+				//TO DO: Show error message
+			}
 		}
 	};
 
@@ -217,7 +229,7 @@ const ShoppingCart = () => {
 							<label
 								className={
 									shoppingCartStyles.itemCountText
-								}>{`$${totalCost}`}</label>
+								}>{`$${calculateTotalCost()}`}</label>
 						</div>
 					</div>
 					<div className={shoppingCartStyles.formContainer}>

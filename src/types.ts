@@ -32,6 +32,7 @@ export type CartItem = {
 };
 
 export type Invoice = {
+	userId: string;
 	fullName: string;
 	address: string;
 	city: string;
@@ -67,5 +68,10 @@ export type Login = {
 
 export type PasswordStatus = {
 	IsPasswordNotSame: boolean;
+	message: string;
+};
+
+export type ApiResponse = {
+	status: number;
 	message: string;
 };

@@ -1,11 +1,12 @@
-import { Invoice } from '../types';
+import { ApiResponse, Invoice } from '../types';
 
 const API_NAME: string = process.env.REACT_APP_API_ADDRESS || '';
 
-export const makePayment = async (invoice: Invoice): Promise<string> => {
+export const makePayment = async (invoice: Invoice): Promise<ApiResponse> => {
 	try {
 		const response = await fetch(`${API_NAME}/payment`, {
 			method: 'POST',
+			credentials: 'include',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',

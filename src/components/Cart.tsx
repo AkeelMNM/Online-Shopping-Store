@@ -33,12 +33,12 @@ const Cart = ({
 			/>
 			<div className={cartStyles.itemDescContainer}>
 				<label className={cartStyles.titleText}>{title}</label>
-				<label>{size}</label>
-				<label>{color}</label>
+				<label>Size: {size}</label>
+				<label>Color: {color}</label>
 			</div>
 			<label className={cartStyles.itemText}>Qty: {quantity}</label>
 			<label className={cartStyles.itemText}>
-				SubTotal: {price * quantity}
+				SubTotal: ${price * quantity}
 			</label>
 			{enableEdit ? (
 				<button className={cartStyles.editButton} onClick={onPressEdit}>
