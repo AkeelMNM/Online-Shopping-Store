@@ -7,6 +7,8 @@ import { fetchUsersCartItems, updateCartPaymentStatus } from '../redux/cart';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import * as PaymentService from '../services/PaymentService';
 import { ApiResponse, CartItem, Invoice, User } from '../types';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const INITIAL_STATE: Invoice = {
 	userId: '',
@@ -141,8 +143,9 @@ const ShoppingCart = () => {
 				dispatch(updateCartPaymentStatus(itemIds));
 				setFormData(INITIAL_STATE);
 				setFormError(ERROR_INITIAL_STATE);
+				toast.success('Your order placed successfully!');
 			} else {
-				//TO DO: Show error message
+				toast.warn('Something went wrong. try again!');
 			}
 		}
 	};
@@ -184,6 +187,17 @@ const ShoppingCart = () => {
 						</button>
 					)}
 				</div>
+				<ToastContainer
+					position="top-center"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					pauseOnHover
+					theme="dark"
+				/>
 			</HeaderFooter>
 		);
 	} else {
@@ -292,6 +306,17 @@ const ShoppingCart = () => {
 						onPressClose={() => setModalVisibility(false)}
 					/>
 				</div>
+				<ToastContainer
+					position="top-center"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					pauseOnHover
+					theme="dark"
+				/>
 			</HeaderFooter>
 		);
 	}
