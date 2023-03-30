@@ -150,9 +150,9 @@ const ShoppingCart = () => {
 		}
 	};
 
-	if (cart.length <= 0) {
-		return (
-			<HeaderFooter>
+	return (
+		<HeaderFooter>
+			{cart.length <= 0 ? (
 				<div className={shoppingCartStyles.container}>
 					<div className={shoppingCartStyles.textContainer}>
 						<label className={shoppingCartStyles.cartNotItemText}>
@@ -187,22 +187,7 @@ const ShoppingCart = () => {
 						</button>
 					)}
 				</div>
-				<ToastContainer
-					position="top-center"
-					autoClose={5000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					pauseOnHover
-					theme="dark"
-				/>
-			</HeaderFooter>
-		);
-	} else {
-		return (
-			<HeaderFooter>
+			) : (
 				<div className={shoppingCartStyles.mainContainer}>
 					<div className={shoppingCartStyles.productContainer}>
 						<div className={shoppingCartStyles.itemCountContainer}>
@@ -306,20 +291,20 @@ const ShoppingCart = () => {
 						onPressClose={() => setModalVisibility(false)}
 					/>
 				</div>
-				<ToastContainer
-					position="top-center"
-					autoClose={5000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					pauseOnHover
-					theme="dark"
-				/>
-			</HeaderFooter>
-		);
-	}
+			)}
+			<ToastContainer
+				position="top-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				pauseOnHover
+				theme="dark"
+			/>
+		</HeaderFooter>
+	);
 };
 
 const shoppingCartStyles = {
