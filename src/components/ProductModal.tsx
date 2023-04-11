@@ -5,6 +5,8 @@ import { QuantityPicker } from 'react-qty-picker';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import _ from 'lodash';
 import { addItemToCart } from '../redux/cart';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ProductModalProps = {
 	visible: Boolean;
@@ -66,12 +68,16 @@ const ProductModal = ({
 				price: parseInt(variant.price.replace(/\D/g, '')),
 				isFreeShipping: false,
 				image: variant.image,
+				isPaymentComplete: false,
 			};
 
 			dispatch(addItemToCart(cartItem));
-			onPressClose();
+			toast.success('The item is added to the cart.');
+			setTimeout(() => {
+				onPressClose();
+			}, 6000);
 		} else {
-			alert('Sorry this product not available');
+			toast('Sorry this product not available');
 		}
 	};
 
@@ -205,6 +211,17 @@ const ProductModal = ({
 						</div>
 					</div>
 				</div>
+				<ToastContainer
+					position="top-center"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					pauseOnHover
+					theme="dark"
+				/>
 			</div>
 		);
 	} else {

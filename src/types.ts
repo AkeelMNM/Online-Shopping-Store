@@ -28,9 +28,11 @@ export type CartItem = {
 	price: number;
 	isFreeShipping: boolean;
 	image: string;
+	isPaymentComplete: boolean;
 };
 
 export type Invoice = {
+	userId: string;
 	fullName: string;
 	address: string;
 	city: string;
@@ -66,5 +68,10 @@ export type Login = {
 
 export type PasswordStatus = {
 	IsPasswordNotSame: boolean;
+	message: string;
+};
+
+export type ApiResponse = {
+	status: number;
 	message: string;
 };

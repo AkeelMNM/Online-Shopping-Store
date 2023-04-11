@@ -11,3 +11,9 @@ export const UPDATE_CART_ITEM_ERROR: string = 'cart/update_cart_item_error';
 export const DELETE_CART_ITEM_REQUEST: string = 'cart/delete_cart_item_request';
 export const DELETE_CART_ITEM_SUCCESS: string = 'cart/delete_cart_item_success';
 export const DELETE_CART_ITEM_ERROR: string = 'cart/delete_cart_item_error';
+export const UPDATE_CART_PAYMENT_STATUS_REQUEST: string =
+	'cart/update_cart_payment_status_request';
+export const UPDATE_CART_PAYMENT_STATUS_SUCCESS: string =
+	'cart/update_cart_payment_status_success';
+export const UPDATE_CART_PAYMENT_STATUS_ERROR: string =
+	'cart/update_cart_payment_status_error';

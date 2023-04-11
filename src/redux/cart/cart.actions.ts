@@ -13,6 +13,9 @@ import {
 	DELETE_CART_ITEM_REQUEST,
 	DELETE_CART_ITEM_SUCCESS,
 	DELETE_CART_ITEM_ERROR,
+	UPDATE_CART_PAYMENT_STATUS_ERROR,
+	UPDATE_CART_PAYMENT_STATUS_REQUEST,
+	UPDATE_CART_PAYMENT_STATUS_SUCCESS,
 } from './cart.types';
 import * as cartService from '../../services/CartService';
 import { CartItem } from '../../types';
@@ -89,6 +92,24 @@ export const removeCartItem = (id: string) => {
 		} catch (error) {
 			console.log(error);
 			dispatch({ type: DELETE_CART_ITEM_ERROR });
+		}
+	};
+};
+
+export const updateCartPaymentStatus = (itemIds: (string | undefined)[]) => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: UPDATE_CART_PAYMENT_STATUS_REQUEST });
+
+			cartService.updateCartPaymentStatus(itemIds);
+
+			dispatch({
+				type: UPDATE_CART_PAYMENT_STATUS_SUCCESS,
+				payload: itemIds,
+			});
+		} catch (error) {
+			console.log(error);
+			dispatch({ type: UPDATE_CART_PAYMENT_STATUS_ERROR });
 		}
 	};
 };

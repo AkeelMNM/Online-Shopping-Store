@@ -7,3 +7,4 @@ export * from './ProductModal';
 export * from './Input';
 export * from './CartProductModal';
 export * from './UserSettingsDropMenu';
+export * from './Cart';

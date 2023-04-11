@@ -8,6 +8,7 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Products from './pages/Products';
+import PurchasedItems from './pages/PurchasedItems';
 import Register from './pages/Register';
 import ShoppingCart from './pages/ShoppingCart';
 import UpdateUserProfile from './pages/UpdateUserProfile';
@@ -22,6 +23,7 @@ const App = () => {
 				<Route path="/products" element={<Products />} />
 				<Route path="/cart" element={<ShoppingCart />} />
 				<Route path="/updateProfile" element={<UpdateUserProfile />} />
+				<Route path="/purchasedItems" element={<PurchasedItems />} />
 				<Route path="*" element={<Navigate to={'/'} />} />
 			</Routes>
 		</Router>
