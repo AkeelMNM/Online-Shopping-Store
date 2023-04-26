@@ -1,1 +1,1 @@
-# Fashion Studio Online Clothing Store
+# Fashion Studio Online Clothing Store Web Application
