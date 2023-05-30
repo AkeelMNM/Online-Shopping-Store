@@ -13,7 +13,6 @@ const HomeCard = ({ image, title, description }: HomeCardProps) => {
 				className={homeCardStyles.image}
 				src={image}
 				alt={title}
-				crossOrigin="anonymous"
 			/>
 			<div className={homeCardStyles.container}>
 				<h5 className={homeCardStyles.title}>{title}</h5>
