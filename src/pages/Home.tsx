@@ -45,7 +45,6 @@ const Home = () => {
 										<img
 											src={item.image}
 											alt="Carousel Image"
-											crossOrigin="anonymous"
 										/>
 									</div>
 								);

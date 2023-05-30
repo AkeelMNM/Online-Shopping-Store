@@ -14,7 +14,6 @@ const ProductCard = ({ name, image, price, onPress }: ProductCardProps) => {
 				className={productCardStyles.image}
 				src={image}
 				alt="product image"
-				crossOrigin="anonymous"
 			/>
 			<div className={productCardStyles.container}>
 				<h5 className={productCardStyles.title}>{name}</h5>
