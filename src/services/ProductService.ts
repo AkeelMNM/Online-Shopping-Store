@@ -1,6 +1,6 @@
 import { Product } from '../types';
 
-const API_NAME: string = process.env.REACT_APP_API_ADDRESS || '';
+const API_NAME: string = process.env.FASHION_STORE_API_ADDRESS || '';
 
 export const fetchProducts = async (): Promise<Array<Product>> => {
 	try {
@@ -40,6 +40,8 @@ export const fetchBestSellerProducts = async (): Promise<Array<Product>> => {
 			method: 'GET',
 		});
 
+		console.log(`${API_NAME}/product/bestseller`);
+
 		const responseData = await response.json();
 		console.log('best seller products fetched', responseData);
 
@@ -71,4 +73,4 @@ export const fetchFilteredProducts = async (
 	}
 };
 
-export const getProduct = (id: string) => {};
+export const getProduct = (id: string) => { };

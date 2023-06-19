@@ -1,6 +1,6 @@
 import { ApiResponse, CartItem } from '../types';
 
-const API_NAME: string = process.env.REACT_APP_API_ADDRESS || '';
+const API_NAME: string = process.env.FASHION_STORE_API_ADDRESS || '';
 
 export const fetchUsersCartItems = async (
 	userId: string,

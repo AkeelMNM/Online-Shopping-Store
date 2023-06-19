@@ -1,6 +1,6 @@
 import { User, Login, PasswordStatus } from '../types';
 
-const API_NAME: string = process.env.REACT_APP_USER_API_ADDRESS || '';
+const API_NAME: string = process.env.FASHION_STORE_API_ADDRESS || '';
 
 export const loginUser = async (
 	email: string,
@@ -9,7 +9,6 @@ export const loginUser = async (
 	try {
 		const response = await fetch(`${API_NAME}/user/login`, {
 			method: 'POST',
-			credentials: 'include',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
