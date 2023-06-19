@@ -19,7 +19,7 @@ const Home = () => {
 	const bestSeller: Product[] = useAppSelector(
 		state => state.product.bestSeller,
 	);
-
+	
 	useEffect(() => {
 		dispatch(fetchContents());
 		dispatch(fetchBestSellerProducts());
